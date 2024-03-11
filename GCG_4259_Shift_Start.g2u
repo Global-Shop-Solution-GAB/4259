@@ -1,0 +1,206 @@
+Program.Sub.Preflight.Start
+
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.sSQL.Declare(string)
+v.Local.iLeader.Declare(long)
+v.Local.iMember.Declare(long)
+v.Local.sFilter.Declare(string)
+v.Local.iDay.Declare(long)
+v.Local.sDay.Declare(string)
+v.Local.sBalGroup.Declare(string)
+v.Local.sParam.Declare(string)
+v.Local.sFile.Declare(string)
+v.Local.sPID.Declare(string)
+v.Local.bExist.Declare(Boolean)
+v.Local.sTime.Declare(string)
+v.Local.dDate.Declare(date)
+v.Local.dLunch.Declare(date)
+v.Local.dWAE.Declare(date)
+V.Local.fCrew.Declare(float)
+v.Local.bSwitch.Declare(boolean)
+v.Local.sTerm.Declare(string)
+v.Local.dTimeDiff.Declare(date)
+
+'Hook Post Online Update
+'38130
+
+f.ODBC.Connection!Con.OpenConnection(v.Ambient.PDSN,v.Ambient.PUser,v.Ambient.PPass)
+
+'Check if file exist
+f.Intrinsic.String.Build("{0}\CrewPID.txt",v.Caller.TempDir,v.Local.sFile)
+f.Intrinsic.File.Exists(v.Local.sFile,v.Local.bExist)
+f.Intrinsic.Control.If(v.Local.bExist,=,True)
+	'We have a file so read the PID
+	f.Intrinsic.File.File2String(v.Local.sFile,v.Local.sPID)
+	f.Intrinsic.Task.PIDRunning(v.Local.sPID,v.Local.bExist)
+	f.Intrinsic.Control.If(v.Local.bExist,=,True)
+		'other program is running so kill it
+		f.Intrinsic.Task.TerminatePID(v.Local.sPID)
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.EndIf
+'Create/modify file
+f.Intrinsic.File.String2File(v.Local.sFile,v.Ambient.PID)
+
+'We need to get all Crew Leaders for today's date and their workcenter
+f.Intrinsic.String.Build("SELECT EMPLOYEE, WORK_CENTER, SHIFT FROM GCG_4259_CREW_SCHED WHERE CREW_LEADER = 1 AND SCHED_DATE = '{0}' ",v.Ambient.Date.PervasiveDate,v.Local.sSQL)
+f.Data.DataTable.CreateFromSQL("Leader","Con",V.Local.sSQL,True)
+'We need to get all crew members for today's date and their workcenter
+f.Intrinsic.String.Build("SELECT EMPLOYEE, WORK_CENTER, SHIFT FROM GCG_4259_CREW_SCHED WHERE CREW_LEADER = 0 AND SCHED_DATE = '{0}' ",v.Ambient.Date.PervasiveDate,v.Local.sSQL)
+f.Data.DataTable.CreateFromSQL("Crew","Con",V.Local.sSQL,True)
+'We need to loop through the Crew Leaders and see if they are clocked into a job
+f.Intrinsic.Control.For(v.Local.iLeader,0,v.DataTable.Leader.RowCount--,1)
+	f.Intrinsic.String.Build("SELECT JOB, SUFFIX, SEQ, WORKCENTER, STATION FROM V_JOBS_IN_PROCESS_G WHERE EMPLOYEE = '{0}' ",V.DataTable.Leader(v.Local.iLeader).Employee!FieldValTrim,v.Local.sSQL)
+	f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstJob",v.Local.sSQL)
+	f.Intrinsic.Control.If(v.ODBC.Con!rstJob.EOF,=,False)
+		'They are clocked into a job so we need to get a dataview of the crew members 
+'		f.Intrinsic.String.Build("Work_Center = '{0}'",v.ODBC.Con!rstJob.FieldValTrim!WORKCENTER,V.Local.sFilter)
+		f.Intrinsic.String.Build("SHIFT = '{0}' AND WORK_CENTER = '{1}'",V.DataTable.Leader(v.Local.iLeader).Shift!FieldVal,V.DataTable.Leader(v.Local.iLeader).Work_Center!FieldVal,V.Local.sFilter)
+		f.Data.DataView.Create("Crew","CrewView",22,v.Local.sFilter,"")
+		'Set the Crew size higher if it is not set to crew
+		f.Intrinsic.String.Build("SELECT CREW_SIZE FROM JOB_OPERATIONS WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}'",v.ODBC.Con!rstJob.FieldValTrim!JOB,v.ODBC.Con!rstJob.FieldValTrim!SUFFIX,v.ODBC.Con!rstJob.FieldValTrim!SEQ,v.Local.sSQL)
+		f.ODBC.Connection!Con.OpenLocalRecordsetRW("rstSize",v.Local.sSQL)
+		f.Intrinsic.Control.If(v.ODBC.Con!rstSize.EOF,=,False)
+			f.Intrinsic.Control.If(v.ODBC.Con!rstSize.FieldVal!CREW_SIZE,=,1)
+				v.Local.fCrew.Set(v.ODBC.Con!rstSize.FieldVal!CREW_SIZE)
+				F.ODBC.Con!rstSize.Set!CREW_SIZE(2)
+				F.ODBC.Con!rstSize.Update
+				v.Local.bSwitch.Set(True)
+			f.Intrinsic.Control.EndIf
+		f.Intrinsic.Control.EndIf
+		f.ODBC.Con!rstSize.Close
+		'Loop through the Crew Members
+		f.Intrinsic.Control.For(v.Local.iMember,0,v.DataView.Crew!CrewView.RowCount--,1)
+			'Check and See if they are clocked into T&A
+			f.Intrinsic.String.Build("SELECT DEPT, SHIFT, WAE_TIME  FROM V_EMP_IN_PROCESS_G WHERE EMPLOYEE = '{0}' ",V.DataView.Crew!CrewView(v.Local.iMember).Employee!FieldValTrim,v.Local.sSQL)
+			f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstTA",v.Local.sSQL)
+			f.Intrinsic.Control.If(v.ODBC.Con!rstTA.EOF,=,False)
+				'They are clocked in
+				'See if they are clocked into a job already
+				f.Intrinsic.String.Build("SELECT EMPLOYEE, WORKCENTER FROM V_JOBS_IN_PROCESS_G WHERE EMPLOYEE = '{0}' ",V.DataView.Crew!CrewView(v.Local.iMember).Employee!FieldValTrim,v.Local.sSQL)
+				f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstMemJob",v.Local.sSQL)
+				f.Intrinsic.Control.If(v.ODBC.Con!rstMemJob.EOF,=,True)
+					'They are not clocked into a job
+					'We need to see if now is >= to Start time for their shift.
+					'need to find the balancing group they are part of.
+					f.Intrinsic.String.Build("SELECT PR_BALANCE_GROUP FROM V_EMPLOYEE_MSTR WHERE EMPLOYEE = '{0}' ",V.DataView.Crew!CrewView(v.Local.iMember).Employee!FieldValTrim,V.Local.sSQL)
+					F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstBal",v.Local.sSQL)
+					f.Intrinsic.Control.If(v.ODBC.Con!rstBal.EOF,=,False)
+						v.Local.sBalGroup.Set(v.ODBC.Con!rstBal.FieldValTrim!PR_BALANCE_GROUP)
+					f.Intrinsic.Control.Else
+						v.Local.sBalGroup.Set("")
+					F.Intrinsic.Control.EndIf
+					f.ODBC.Con!rstBal.Close
+					F.Intrinsic.Date.Weekday(V.Ambient.Date,V.Local.iDay)
+					F.Intrinsic.Math.Sub(V.Local.iDay,1,V.Local.iDay)
+					f.Intrinsic.String.Split("START_SUN*!*START_MON*!*START_TUE*!*START_WED*!*START_THR*!*START_FRI*!*START_SAT","*!*",V.Local.sDay)
+					f.Intrinsic.String.Build("SELECT {0} FROM V_LUNCH_SHIFT WHERE DEPT = '{1}' AND SHIFT = '{2}' AND SHIFT_GROUP = '{3}' ",V.Local.sDay(V.Local.iDay).Trim,V.ODBC.Con!rstTA.FieldValTrim!DEPT,V.ODBC.Con!rstTA.FieldValTrim!SHIFT,v.Local.sBalGroup.Trim,V.Local.sSQL)
+					F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstStart",v.Local.sSQL)
+					f.Intrinsic.Control.If(v.ODBC.Con!rstStart.EOF,=,False)
+						'>= to start time of their shift so clock them into the job
+						v.Local.dLunch.Set(v.ODBC.Con!rstStart.FieldVal![V.Local.sDay(V.Local.iDay).Trim])
+						'Lets first see if we are within 6 minutes of Shift Start
+						'Add 5 minutes to lunch
+						f.Intrinsic.Date.DateAdd("N",6,v.Local.dLunch,v.Local.dTimeDiff)
+						f.Intrinsic.Control.If(v.Ambient.Now.TimeComp,>=,v.Local.dLunch.TimeComp,"AND",v.Ambient.Now.TimeComp,<=,v.Local.dTimeDiff.TimeComp)
+						
+							f.Intrinsic.Control.If(V.Ambient.Now.TimeComp,>=,v.Local.dLunch.TimeComp)
+								'See if they were clocked in before shift start
+								v.Local.dWAE.Set(v.ODBC.Con!rstTA.FieldValTrim!WAE_TIME)
+								f.Intrinsic.Control.If(v.Local.dWAE.TimeComp,<=,v.Local.dLunch.TimeComp)
+									'They clocked in before start so auto clock them in
+									'Change the employee terminal to the current terminal
+	'								F.Intrinsic.String.Build("SELECT STATION FROM EMP_IN_PROCESS_G WHERE EMPLOYEE = '{0}' ",V.DataView.Crew!CrewView(v.Local.iMember).Employee!FieldValTrim,v.Local.sSQL)
+	'								f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstStation",v.Local.sSQL)
+	'								f.Intrinsic.Control.If(v.ODBC.Con!rstStation.EOF,=,False)
+	'									'We need to update the station
+	'				'					f.ODBC.Con!rstStation.Set!STATION(v.Caller.Terminal.Format00000000)
+	'				'					f.ODBC.Con!rstStation.Update
+	'									v.Local.sTerm.Set(v.ODBC.Con!rstStation.FieldValTrim!STATION)
+	'								f.Intrinsic.Control.Else
+										v.Local.sTerm.Set(v.ODBC.Con!rstJob.FieldValTrim!STATION)
+	'								f.Intrinsic.Control.EndIf
+	'								f.ODBC.con!rstStation.Close
+									'use callwrapper to clock into the job
+									
+									f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}!*!{5}",v.ODBC.Con!rstJob.FieldValTrim!JOB,v.ODBC.Con!rstJob.FieldValTrim!SUFFIX,v.ODBC.Con!rstJob.FieldValTrim!SEQ,v.ODBC.Con!rstJob.FieldValTrim!WORKCENTER,V.DataView.Crew!CrewView(v.Local.iMember).Employee!FieldValTrim,v.Local.sTerm,v.Local.sParam)
+									f.Global.General.CallWrapperSync(9201,v.Local.sParam)
+									f.Intrinsic.String.Build("SELECT * FROM JOBS_IN_PROCESS_G WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}' AND EMPLOYEE = '{4}' AND WORKCENTER = '{3}' ",v.ODBC.Con!rstJob.FieldValTrim!JOB,v.ODBC.Con!rstJob.FieldValTrim!SUFFIX,v.ODBC.Con!rstJob.FieldValTrim!SEQ,v.ODBC.Con!rstJob.FieldValTrim!WORKCENTER,V.DataView.Crew!CrewView(v.Local.iMember).Employee!FieldValTrim,V.Local.sSQL)
+									f.ODBC.Connection!Con.OpenLocalRecordsetRW("rstChange",v.Local.sSQL)
+									f.Intrinsic.Control.If(v.ODBC.Con!rstChange.EOF,=,False)
+										'We are going to update the start time
+										v.Local.dDate.Set(v.ODBC.Con!rstStart.FieldVal![v.Local.sDay(v.Local.iDay).Trim])
+										f.Intrinsic.String.TimeString(v.Local.dDate,v.Local.sTime)
+										f.Intrinsic.String.RPad(v.Local.sTime,"0",8,v.Local.sTime)
+										f.ODBC.Con!rstChange.Set!START_TIME(v.Local.sTime)
+										f.ODBC.Con!rstChange.Update
+									f.Intrinsic.Control.EndIf
+									f.ODBC.Con!rstChange.Close
+								f.Intrinsic.Control.EndIf
+							f.Intrinsic.Control.EndIf
+						f.Intrinsic.Control.EndIf
+					f.Intrinsic.Control.EndIf
+					f.ODBC.Con!rstStart.Close
+				f.Intrinsic.Control.EndIf
+				f.ODBC.Con!rstMemJob.Close
+			f.Intrinsic.Control.EndIf
+			f.ODBC.Con!rstTA.Close
+		f.Intrinsic.Control.Next(v.Local.iMember)
+		'Close crewview
+		f.Data.DataView.Close("Crew","CrewView")
+		'Set crew size back
+		F.Intrinsic.Control.If(V.Local.bSwitch,=,True)
+'			f.Intrinsic.String.Build("SELECT CREW_SIZE FROM JOB_OPERATIONS WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}'",V.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Local.sSQL)
+			f.Intrinsic.String.Build("SELECT CREW_SIZE FROM JOB_OPERATIONS WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}'",v.ODBC.Con!rstJob.FieldValTrim!JOB,v.ODBC.Con!rstJob.FieldValTrim!SUFFIX,v.ODBC.Con!rstJob.FieldValTrim!SEQ,v.Local.sSQL)
+			f.ODBC.Connection!Con.OpenLocalRecordsetRW("rstSize",v.Local.sSQL)
+			f.Intrinsic.Control.If(v.ODBC.Con!rstSize.EOF,=,False)
+				F.ODBC.Con!rstSize.Set!CREW_SIZE(v.Local.fCrew)
+				F.ODBC.Con!rstSize.Update
+			f.Intrinsic.Control.EndIf
+			f.ODBC.Con!rstSize.Close
+			v.Local.bSwitch.Set(False)
+		f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.EndIf
+	f.ODBC.Con!rstJob.Close				
+f.Intrinsic.Control.Next(v.Local.iLeader)
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Shift_Start.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.Debug.SetLA(V.Local.sError)
+	f.Intrinsic.Control.CallSub(unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.Unload.Start
+F.Intrinsic.Control.SetErrorHandler("Unload_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+f.ODBC.Connection!Con.Close
+f.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Unload_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Shift_Start.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.Debug.SetLA(V.Local.sError)
+	f.Intrinsic.Control.End
+
+Function.Intrinsic.Control.EndIf
+Program.Sub.Unload.End
+
+Program.Sub.Comments.Start
+${$0$}$$}$SS1$}$12/16/2016 10:41:24 AM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$Runs on post online update hook and clocks eveyone in who isn't clocked into a job and should be.
+Program.Sub.Comments.End
