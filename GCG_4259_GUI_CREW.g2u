@@ -1,0 +1,950 @@
+Program.Sub.ScreenSU.Start
+Gui.F_Crew..Create
+Gui.F_Crew..Caption("Crew Clock-In")
+Gui.F_Crew..Size(6780,8115)
+Gui.F_Crew..MinX(0)
+Gui.F_Crew..MinY(0)
+Gui.F_Crew..Position(0,0)
+Gui.F_Crew..BackColor(-2147483633)
+Gui.F_Crew..MousePointer(0)
+Gui.F_Crew..Event(UnLoad,Unload)
+Gui.F_Crew.GSGCCrew.Create(GsGridControl)
+Gui.F_Crew.GSGCCrew.Size(6420,6975)
+Gui.F_Crew.GSGCCrew.Position(105,105)
+Gui.F_Crew.GSGCCrew.Event(RowCellClick,GSGCCrew_RowCellClick)
+Gui.F_Crew.txtOverride.Create(TextBox,"",True,1215,300,0,105,7395,True,0,"Arial",8,-2147483643,1)
+Gui.F_Crew.txtOverride.FontStyle(True,False,False,False,False)
+Gui.F_Crew.txtOverride.PasswordChar("*")
+Gui.F_Crew.txtOverride.Event(KeyPressEnter,cmdOverride_Click)
+Gui.F_Crew.lbl1.Create(Label,"Password",True,975,255,0,105,7185,True,0,"Arial",8,-2147483633,0)
+Gui.F_Crew.cmdOverride.Create(Button)
+Gui.F_Crew.cmdOverride.Size(855,330)
+Gui.F_Crew.cmdOverride.Position(1500,7380)
+Gui.F_Crew.cmdOverride.Caption("Override")
+Gui.F_Crew.cmdOverride.Event(Click,cmdOverride_Click)
+Gui.F_WC..Create
+Gui.F_WC..Caption("Select Work Center")
+Gui.F_WC..Size(4230,1830)
+Gui.F_WC..MinX(0)
+Gui.F_WC..MinY(0)
+Gui.F_WC..Position(0,0)
+Gui.F_WC..BackColor(-2147483633)
+Gui.F_WC..MaxButton(False)
+Gui.F_WC..MinButton(False)
+Gui.F_WC..MousePointer(0)
+Gui.F_WC..Sizeable(False)
+Gui.F_WC..Event(UnLoad,F_WC_UnLoad)
+Gui.F_WC.lbl1.Create(Label,"Select Work Center",True,1935,255,0,105,105,True,0,"Arial",8,-2147483633,0)
+Gui.F_WC.ddlWC.Create(DropDownList)
+Gui.F_WC.ddlWC.Size(3645,330)
+Gui.F_WC.ddlWC.Position(105,315)
+Gui.F_WC.cmdSelection.Create(Button)
+Gui.F_WC.cmdSelection.Size(855,375)
+Gui.F_WC.cmdSelection.Position(105,885)
+Gui.F_WC.cmdSelection.Caption("Select")
+Gui.F_WC.cmdSelection.Event(Click,cmdSelection_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Variable.Global.dDate.Declare(Date,01/01/1900)
+Variable.Global.sWC.Declare(String)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+f.ODBC.Connection!Con.OpenConnection(v.Ambient.PDSN,v.Ambient.PUser,v.Ambient.PPass)
+
+'Creating DataTable to store errors
+f.Data.DataTable.Create("Error",True)
+f.Data.DataTable.AddColumn("Error","Name","String")
+f.Data.DataTable.AddColumn("Error","Employee","String")
+f.Data.DataTable.AddColumn("Error","Reason","String")
+f.Data.DataTable.AddColumn("Error","Selection","Boolean")
+f.Data.DataTable.AddColumn("Error","ClockedIn","Boolean")
+f.Data.DataTable.AddColumn("Error","Lunch","Long")
+
+f.Intrinsic.Control.SelectCase(v.Caller.Hook)
+	
+	f.Intrinsic.Control.Case(15921)
+		'GUI Barcode Click In
+		'We need to check to see if employee is in our custom table for todays date
+		'If they are then pop up a message to display the work center they are assigned to
+		f.Intrinsic.Control.CallSub(clockin)
+		
+	f.Intrinsic.Control.Case(15754)
+		'Gui Barcode Job Start
+		f.Intrinsic.Control.CallSub(wcpopulate,"JOB",V.Passed.009000.Trim,"SUFFIX",V.Passed.009001.Trim,"SEQ",V.Passed.009002.Trim,"EMP",V.Passed.009993.Trim,"WC",V.Passed.009003.Trim)
+'		f.Intrinsic.Control.CallSub(jobstart,"JOB",V.Passed.009000.Trim,"SUFFIX",V.Passed.009001.Trim,"SEQ",V.Passed.009002.Trim,"EMP",V.Passed.009993.Trim,"WC",V.Passed.009003.Trim)
+		
+	f.Intrinsic.Control.Case(15934)
+		'Gui Work Order Job Start
+		f.Intrinsic.Control.CallSub(wcpopulate,"JOB",V.Passed.009000.Trim,"SUFFIX",V.Passed.009001.Trim,"SEQ",V.Passed.009002.Trim,"EMP",V.Passed.009993.Trim,"WC",V.Passed.009004.Trim)
+'		f.Intrinsic.Control.CallSub(jobstart,"JOB",V.Passed.009000.Trim,"SUFFIX",V.Passed.009001.Trim,"SEQ",V.Passed.009002.Trim,"EMP",V.Passed.009993.Trim,"WC",V.Passed.009004.Trim)
+		
+	f.Intrinsic.Control.Case(15951)
+		'Gui Work Center Job Start
+		f.Intrinsic.Control.CallSub(wcpopulate,"JOB",V.Passed.009990.Trim,"SUFFIX",V.Passed.009991.Trim,"SEQ",V.Passed.009992.Trim,"EMP",V.Passed.009993.Trim,"WC",V.Passed.009996.Trim)
+'		f.Intrinsic.Control.CallSub(jobstart,"JOB",V.Passed.009990.Trim,"SUFFIX",V.Passed.009991.Trim,"SEQ",V.Passed.009992.Trim,"EMP",V.Passed.009993.Trim,"WC",V.Passed.009996.Trim)
+			
+f.Intrinsic.Control.EndSelect
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_GUI_CREW.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Main.End
+
+Program.Sub.Unload.Start
+F.Intrinsic.Control.SetErrorHandler("Unload_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+f.ODBC.Connection!Con.Close
+f.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Unload_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_GUI_CREW.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.End
+
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Unload.End
+
+Program.Sub.ClockIn.Start
+F.Intrinsic.Control.SetErrorHandler("ClockIn_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.sSQL.Declare(string)
+v.Local.sRet.Declare(string)
+v.Local.sCrewStat.Declare(string)
+
+'We need to check to see if employee is in our custom table for todays date
+f.Intrinsic.String.Build("SELECT WORK_CENTER, CREW_LEADER FROM GCG_4259_CREW_SCHED WHERE EMPLOYEE = '{0}' AND SCHED_DATE = '{1}' ",V.Passed.009993.Trim,V.Ambient.Date.PervasiveDate,v.Local.sSQL)
+f.ODBC.Connection!Con.ExecuteAndReturn(v.Local.sSQL,v.Local.sRet)
+f.Intrinsic.Control.If(v.Local.sRet,<>,"")
+	'If they are then pop up a message to display the work center they are assigned to
+'	f.Intrinsic.String.Replace(v.Local.sRet,"*!*","",v.Local.sRet)
+	f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+	v.Local.sRet.RedimPreserve(0,1)
+	f.Intrinsic.String.Build("SELECT WC_NAME FROM V_WORKCENTERS WHERE MACHINE = '{0}' ",V.Local.sRet(0).Trim,v.Local.sSQL)
+	f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstName",v.Local.sSQL)
+	f.Intrinsic.Control.If(v.ODBC.Con!rstName.EOF,=,False)
+		f.Intrinsic.String.Build("{0}: {1}",v.Local.sRet.Trim,v.ODBC.Con!rstName.FieldValTrim!WC_NAME,V.Local.sRet)
+	f.Intrinsic.Control.EndIf
+	f.ODBC.Con!rstName.Close
+	'Set crew status
+	f.Intrinsic.Control.IIf(v.Local.sRet(1).Trim,=,"True","Crew Leader","Crew Member",v.Local.sCrewStat)
+	f.Intrinsic.String.Build("You are assigned to {0} as {1}.",v.Local.sRet.Trim,v.Local.sCrewStat.Trim,v.Local.sRet)
+	f.Intrinsic.UI.InvokeWaitDialog(v.Local.sRet,"Attention")
+	f.Intrinsic.UI.Sleep(4)
+	f.Intrinsic.UI.CloseWaitDialog
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("ClockIn_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_GUI_CREW.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.ClockIn.End
+
+Program.Sub.JobStart.Start
+F.Intrinsic.Control.SetErrorHandler("JobStart_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.sSQL.Declare(string)
+v.Local.iCount.Declare(long)
+v.Local.iDay.Declare(long)
+v.Local.sDay.Declare(string)
+v.Local.sParam.Declare(string)
+v.Local.dDate.Declare(date)
+v.Local.sTime.Declare(string)
+v.Local.sBalGroup.Declare(String)
+v.Local.bSwitch.Declare(Boolean)
+v.Local.fCrew.Declare(float)
+v.Local.iRet.Declare(long)
+v.Local.bIndirect.Declare(boolean)
+v.Local.iShift.Declare(long)
+
+'Get the employee Shift
+'f.Intrinsic.String.Build("SELECT SHIFT FROM V_EMPLOYEE_MSTR WHERE EMPLOYEE = '{0}' ",V.Args.EMP.Trim,v.Local.sSQL)
+'f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstShift",v.Local.sSQL)
+'f.Intrinsic.Control.If(v.ODBC.Con!rstShift.EOF,=,False)
+'	'We have a shift so save it
+'	v.Local.iShift.Set(v.ODBC.Con!rstShift.FieldVal!SHIFT)
+'f.Intrinsic.Control.Else
+'	'We don't have a shift so lets set it 0
+'	v.Local.iShift.Set(0)
+'f.Intrinsic.Control.EndIf
+'f.ODBC.Con!rstShift.Close
+
+'Get all WC for todays date in our custom table
+'f.Intrinsic.String.Build("SELECT WORK_CENTER, WORK_CENTER FROM GCG_4259_CREW_SCHED WHERE SCHED_DATE = '{0}' AND SHIFT = '{1}'  ",v.Ambient.Date.PervasiveDate,V.Local.iShift,v.Local.sSQL)
+'f.Data.Dictionary.CreateFromSQL("WC","Con",v.Local.sSQL,4)
+'f.Data.Dictionary.SetDefaultReturn("WC","***NONE***")
+
+'Checking to see if this is an indirect sequence.
+f.Intrinsic.String.Build("SELECT * FROM V_IND_LBR_ACCTS WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQUENCE = '{2}' ",V.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Local.sSQL)
+f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstIndirect",v.Local.sSQL)
+f.Intrinsic.Control.If(v.ODBC.Con!rstIndirect.EOF,=,False)
+	'We have indirect line
+'	f.Intrinsic.Control.If(v.ODBC.Con!rstIndirect.FieldValTrim!INDIRECT_GL_ACCT,<>,"")
+		V.Local.bIndirect.Set(True)
+'	f.Intrinsic.Control.Else
+'		v.Local.bIndirect.Set(False)
+'	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.Else
+	v.Local.bIndirect.Set(False)
+f.Intrinsic.Control.EndIf
+f.ODBC.Con!rstIndirect.Close
+
+'If WC we are clocking into is in our custom table
+'f.Intrinsic.Control.If(v.Dictionary.WC![v.Args.WC.Trim],<>,"***NONE***")
+
+	'If Job is not in process
+	f.Intrinsic.String.Build("SELECT * FROM V_JOBS_IN_PROCESS_G WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}' ",V.Args.JOB.Trim,V.Args.SUFFIX.Trim,V.Args.SEQ.Trim,V.Local.sSQL)
+	F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstProgress",v.Local.sSQL)
+	f.Intrinsic.Control.If(v.ODBC.Con!rstProgress.EOF,=,True)
+		'Check and see if we are in a indirect labor sequence or indirect job
+		f.Intrinsic.Control.If(v.Args.SEQ,>=,900000,"OR",v.Local.bIndirect,=,True)
+			'are we crew leader?
+			f.Intrinsic.String.Build("SELECT CREW_LEADER, WORK_CENTER, SHIFT FROM GCG_4259_CREW_SCHED WHERE EMPLOYEE = '{0}' AND SCHED_DATE = '{1}' AND CREW_LEADER = 1 ",V.Args.EMP.Trim,v.Global.dDate.PervasiveDate,v.Local.sSQL)
+			f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstLeader",v.Local.sSQL)
+			f.Intrinsic.Control.If(v.ODBC.Con!rstLeader.EOF,=,False)
+				'check to see if they are already in a job
+				f.Intrinsic.String.Build("SELECT * FROM V_JOBS_IN_PROCESS_G WHERE EMPLOYEE = '{0}' ",V.Args.EMP.Trim,v.Local.sSQL)
+				f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstJobCheck",v.Local.sSQL)
+				f.Intrinsic.Control.If(v.ODBC.Con!rstJobCheck.EOF,=,True)
+					'We need to check and make sure this has a crew size set.
+					f.Intrinsic.UI.Msgbox("Would you like to clock your crew into this sequence?","Warning",4,v.Local.iRet)
+					f.Intrinsic.Control.If(v.Local.iRet,=,6)
+						f.Intrinsic.String.Build("SELECT CREW_SIZE FROM JOB_OPERATIONS WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}'",V.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Local.sSQL)
+						f.ODBC.Connection!Con.OpenLocalRecordsetRW("rstSize",v.Local.sSQL)
+						f.Intrinsic.Control.If(v.ODBC.Con!rstSize.EOF,=,False)
+							f.Intrinsic.Control.If(v.ODBC.Con!rstSize.FieldVal!CREW_SIZE,<,2)
+								v.Local.fCrew.Set(v.ODBC.Con!rstSize.FieldVal!CREW_SIZE)
+								F.ODBC.Con!rstSize.Set!CREW_SIZE(2)
+								F.ODBC.Con!rstSize.Update
+								v.Local.bSwitch.Set(True)
+							f.Intrinsic.Control.EndIf
+						f.Intrinsic.Control.EndIf
+						f.ODBC.Con!rstSize.Close
+	
+						'It is our crew leader so log him in
+						f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}",v.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Args.WC.Trim,v.Args.EMP.Trim,v.Local.sParam)
+						f.Global.General.CallWrapperSync(9200,v.Local.sParam)
+						'Pass overrride
+						v.Passed.777777.Set(1)
+						'We are crew leader, clock everyone in that has their shift started
+						f.Intrinsic.String.Build("SELECT RTRIM(EMPLOYEE) AS EMPLOYEE, RTRIM(NAME) AS NAME FROM GCG_4259_CREW_SCHED WHERE WORK_CENTER = '{0}' AND SCHED_DATE = '{1}' AND CREW_LEADER = 0 AND SHIFT = '{2}' ORDER BY REC_ID ",V.ODBC.Con!rstLeader.FieldValTrim!WORK_CENTER,v.Global.dDate.PervasiveDate,V.ODBC.Con!rstLeader.FieldValTrim!SHIFT,v.Local.sSQL)
+						f.Data.DataTable.CreateFromSQL("Crew","Con",v.Local.sSQL,True)
+						F.Intrinsic.Control.CallSub(crewclockin,"JOB",V.Args.JOB.Trim,"SUFFIX",V.Args.SUFFIX.Trim,"SEQ",V.Args.SEQ.Trim,"WC",V.Args.WC.Trim)
+						F.Data.DataTable.Close("Crew")
+						'if switch is true then we need to set crew back to what it was
+						F.Intrinsic.Control.If(V.Local.bSwitch,=,True)
+							f.Intrinsic.String.Build("SELECT CREW_SIZE FROM JOB_OPERATIONS WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}'",V.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Local.sSQL)
+							f.ODBC.Connection!Con.OpenLocalRecordsetRW("rstSize",v.Local.sSQL)
+							f.Intrinsic.Control.If(v.ODBC.Con!rstSize.EOF,=,False)
+								F.ODBC.Con!rstSize.Set!CREW_SIZE(v.Local.fCrew)
+								F.ODBC.Con!rstSize.Update
+							f.Intrinsic.Control.EndIf
+							f.ODBC.Con!rstSize.Close
+						f.Intrinsic.Control.EndIf
+					f.Intrinsic.Control.Else
+						'They chose no so just clock them in
+						f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}",v.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Args.WC.Trim,v.Args.EMP.Trim,v.Local.sParam)
+						f.Global.General.CallWrapperSync(9200,v.Local.sParam)
+						'Pass overrride
+						v.Passed.777777.Set(1)
+					f.Intrinsic.Control.EndIf
+				f.Intrinsic.Control.Else
+					'they are already clocked into a job
+					f.Intrinsic.UI.Msgbox("You are already clocked into a Job.","Attention")
+					v.Passed.777777.Set(1)
+				f.Intrinsic.Control.EndIf
+				f.ODBC.Con!rstJobCheck.Close
+			f.Intrinsic.Control.EndIf
+			f.ODBC.Con!rstLeader.Close
+			'Not crew leader normal clockin
+			
+		'We are not in an indirect job or sequence
+		f.Intrinsic.Control.Else
+
+'			'If crew size > 1 then we check to see if person clocking in is crew leader
+			f.Intrinsic.String.Build("SELECT CREW_SIZE FROM V_JOB_OPERATIONS WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}' ",V.Args.JOB.Trim,V.Args.SUFFIX.Trim,V.Args.SEQ.Trim,V.Local.sSQL)
+			F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstSize",v.Local.sSQL)
+			f.Intrinsic.Control.If(v.ODBC.Con!rstSize.EOF,=,False)
+'				f.Intrinsic.Control.If(v.ODBC.Con!rstSize.FieldVal!CREW_SIZE,>=,1)
+					'if employee clocking in is crew leader than allow them to clock in
+					f.Intrinsic.String.Build("SELECT CREW_LEADER, WORK_CENTER, SHIFT FROM GCG_4259_CREW_SCHED WHERE EMPLOYEE = '{0}' AND SCHED_DATE = '{1}' AND CREW_LEADER = 1 ",V.Args.EMP.Trim,V.Global.dDate.PervasiveDate,v.Local.sSQL)
+					f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstLeader",v.Local.sSQL)
+					f.Intrinsic.Control.If(v.ODBC.Con!rstLeader.EOF,=,False)
+						'It is our crew leader so check to see if he is already in a job
+						f.Intrinsic.String.Build("SELECT * FROM V_JOBS_IN_PROCESS_G WHERE EMPLOYEE = '{0}' ",V.Args.EMP.Trim,v.Local.sSQL)
+						f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstJobCheck",v.Local.sSQL)
+						f.Intrinsic.Control.If(v.ODBC.Con!rstJobCheck.EOF,=,True)
+							'They are not clocked into a job so let them log in
+							f.Intrinsic.String.Build("SELECT CREW_SIZE FROM JOB_OPERATIONS WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}'",V.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Local.sSQL)
+							f.ODBC.Connection!Con.OpenLocalRecordsetRW("rstSize2",v.Local.sSQL)
+							f.Intrinsic.Control.If(v.ODBC.Con!rstSize2.EOF,=,False)
+								f.Intrinsic.Control.If(v.ODBC.Con!rstSize2.FieldVal!CREW_SIZE,=,1)
+									v.Local.fCrew.Set(v.ODBC.Con!rstSize2.FieldVal!CREW_SIZE)
+									F.ODBC.Con!rstSize2.Set!CREW_SIZE(2)
+									F.ODBC.Con!rstSize2.Update
+									v.Local.bSwitch.Set(True)
+								f.Intrinsic.Control.EndIf
+							f.Intrinsic.Control.EndIf
+							f.ODBC.Con!rstSize2.Close
+							f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}",v.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Args.WC.Trim,v.Args.EMP.Trim,v.Local.sParam)
+							f.Global.General.CallWrapperSync(9200,v.Local.sParam)
+							'Pass overrride
+							v.Passed.777777.Set(1)
+							'We will get all crew members and check to make sure they are not already clocked into a job
+							f.Intrinsic.String.Build("SELECT RTRIM(EMPLOYEE) AS EMPLOYEE, RTRIM(NAME) AS NAME FROM GCG_4259_CREW_SCHED WHERE WORK_CENTER = '{0}' AND SCHED_DATE = '{1}' AND CREW_LEADER = 0 AND SHIFT = '{2}' ORDER BY REC_ID ",V.ODBC.Con!rstLeader.FieldValTrim!WORK_CENTER,V.Global.dDate.PervasiveDate,V.ODBC.Con!rstLeader.FieldValTrim!SHIFT,v.Local.sSQL)
+							f.Data.DataTable.CreateFromSQL("Crew","Con",v.Local.sSQL,True)
+							'We are going to loop through all of the Employees in the table
+							F.Intrinsic.Control.CallSub(crewclockin,"JOB",V.Args.JOB.Trim,"SUFFIX",V.Args.SUFFIX.Trim,"SEQ",V.Args.SEQ.Trim,"WC",V.Args.WC.Trim)
+							f.Data.DataTable.Close("Crew")
+							'if switch is true then we need to set crew back to what it was
+							F.Intrinsic.Control.If(V.Local.bSwitch,=,True)
+								f.Intrinsic.String.Build("SELECT CREW_SIZE FROM JOB_OPERATIONS WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}'",V.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Local.sSQL)
+								f.ODBC.Connection!Con.OpenLocalRecordsetRW("rstSize2",v.Local.sSQL)
+								f.Intrinsic.Control.If(v.ODBC.Con!rstSize2.EOF,=,False)
+									F.ODBC.Con!rstSize2.Set!CREW_SIZE(v.Local.fCrew)
+									F.ODBC.Con!rstSize2.Update
+								f.Intrinsic.Control.EndIf
+								f.ODBC.Con!rstSize2.Close
+							f.Intrinsic.Control.EndIf
+						f.Intrinsic.Control.Else
+							'they are already clocked into a job
+							f.Intrinsic.UI.Msgbox("You are already clocked into a Job.","Attention")
+							v.Passed.777777.Set(1)
+						f.Intrinsic.Control.EndIf
+						f.ODBC.Con!rstJobCheck.Close
+					'They are not Crew Leader or not in a crew at all
+					f.Intrinsic.Control.Else
+						f.Intrinsic.Control.If(v.ODBC.Con!rstSize.FieldVal!CREW_SIZE,>=,2)
+							'message box saying contact supervisor and block clocking in
+							f.Intrinsic.UI.Msgbox("Employee is not a crew leader. Please consult your supervisor.","Attention")
+							v.Passed.777777.Set(1)
+						f.Intrinsic.Control.Else
+							f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}",v.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Args.WC.Trim,v.Args.EMP.Trim,v.Local.sParam)
+							f.Global.General.CallWrapperSync(9200,v.Local.sParam)
+							'Pass overrride
+							v.Passed.777777.Set(1)
+						f.Intrinsic.Control.EndIf
+					f.Intrinsic.Control.EndIf
+					f.ODBC.Con!rstLeader.Close
+'				f.Intrinsic.Control.Else
+'					'If crew size < 1 then allow them to start the job
+'					f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}",v.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Args.WC.Trim,v.Args.EMP.Trim,v.Local.sParam)
+'					f.Global.General.CallWrapperSync(9200,v.Local.sParam)
+'					'Pass overrride
+'					v.Passed.777777.Set(1)
+'				F.Intrinsic.Control.EndIf
+			f.Intrinsic.Control.EndIf
+			f.ODBC.Con!rstSize.Close
+		f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.EndIf
+	'Job is already in process Allow user to clock in normally
+	f.ODBC.Con!rstProgress.Close
+
+	
+'f.Intrinsic.Control.ElseIf(v.Args.SEQ,>=,900000,"OR",v.Local.bIndirect,=,True)
+	'We are in a indirect labor sequence
+	'Check and see if someone is clocked in
+'	f.Intrinsic.String.Build("SELECT * FROM V_JOBS_IN_PROCESS_G WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}' ",V.Args.JOB.Trim,V.Args.SUFFIX.Trim,V.Args.SEQ.Trim,V.Local.sSQL)
+'	F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstProgress",v.Local.sSQL)
+'	f.Intrinsic.Control.If(v.ODBC.Con!rstProgress.EOF,=,True)
+'		'Not clocked in
+'		'are we crew leader?
+'		f.Intrinsic.String.Build("SELECT CREW_LEADER, WORK_CENTER FROM GCG_4259_CREW_SCHED WHERE EMPLOYEE = '{0}' AND SCHED_DATE = '{1}' AND CREW_LEADER = 1 ",V.Args.EMP.Trim,V.Ambient.Date.PervasiveDate,v.Local.sSQL)
+'		f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstLeader",v.Local.sSQL)
+'		f.Intrinsic.Control.If(v.ODBC.Con!rstLeader.EOF,=,False)
+'			'We need to check and make sure this has a crew size set.
+'			f.Intrinsic.UI.Msgbox("Would you like to clock your crew into this sequence?","Warning",4,v.Local.iRet)
+'			f.Intrinsic.Control.If(v.Local.iRet,=,6)
+'				f.Intrinsic.String.Build("SELECT CREW_SIZE FROM JOB_OPERATIONS WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}'",V.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Local.sSQL)
+'				f.ODBC.Connection!Con.OpenLocalRecordsetRW("rstSize",v.Local.sSQL)
+'				f.Intrinsic.Control.If(v.ODBC.Con!rstSize.EOF,=,False)
+'					f.Intrinsic.Control.If(v.ODBC.Con!rstSize.FieldVal!CREW_SIZE,<,2)
+'						v.Local.fCrew.Set(v.ODBC.Con!rstSize.FieldVal!CREW_SIZE)
+'						F.ODBC.Con!rstSize.Set!CREW_SIZE(2)
+'						F.ODBC.Con!rstSize.Update
+'						v.Local.bSwitch.Set(True)
+'					f.Intrinsic.Control.EndIf
+'				f.Intrinsic.Control.EndIf
+'				f.ODBC.Con!rstSize.Close
+'				'It is our crew leader so log him in
+'				f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}",v.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Args.WC.Trim,v.Args.EMP.Trim,v.Local.sParam)
+'				f.Global.General.CallWrapperSync(9200,v.Local.sParam)
+'				'Pass overrride
+'				v.Passed.777777.Set(1)
+'				'We are crew leader, clock everyone in that has their shift started
+'				f.Intrinsic.String.Build("SELECT RTRIM(EMPLOYEE) AS EMPLOYEE, RTRIM(NAME) AS NAME FROM GCG_4259_CREW_SCHED WHERE WORK_CENTER = '{0}' AND SCHED_DATE = '{1}' AND CREW_LEADER = 0 AND SHIFT = '{2}' ORDER BY REC_ID ",V.ODBC.Con!rstLeader.FieldValTrim!WORK_CENTER,V.Ambient.Date.PervasiveDate,V.Local.iShift,v.Local.sSQL)
+'				f.Data.DataTable.CreateFromSQL("Crew","Con",v.Local.sSQL,True)
+'				F.Intrinsic.Control.CallSub(crewclockin,"JOB",V.Args.JOB.Trim,"SUFFIX",V.Args.SUFFIX.Trim,"SEQ",V.Args.SEQ.Trim,"WC",V.Args.WC.Trim)
+'				F.Data.DataTable.Close("Crew")
+'				'if switch is true then we need to set crew back to what it was
+'				F.Intrinsic.Control.If(V.Local.bSwitch,=,True)
+'					f.Intrinsic.String.Build("SELECT CREW_SIZE FROM JOB_OPERATIONS WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}'",V.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Local.sSQL)
+'					f.ODBC.Connection!Con.OpenLocalRecordsetRW("rstSize",v.Local.sSQL)
+'					f.Intrinsic.Control.If(v.ODBC.Con!rstSize.EOF,=,False)
+'						F.ODBC.Con!rstSize.Set!CREW_SIZE(v.Local.fCrew)
+'						F.ODBC.Con!rstSize.Update
+'					f.Intrinsic.Control.EndIf
+'					f.ODBC.Con!rstSize.Close
+'				f.Intrinsic.Control.EndIf
+'			f.Intrinsic.Control.EndIf
+'		f.Intrinsic.Control.EndIf
+'		f.ODBC.Con!rstLeader.Close
+'		'Not crew leader normal clockin
+'	f.Intrinsic.Control.EndIf
+'	f.ODBC.Con!rstProgress.Close
+		'Clocked in
+			'Clock in normally
+			
+'f.Intrinsic.Control.EndIf
+
+'If datatable rowcount > -1 we have people that didn't get clocked in
+f.Intrinsic.Control.If(v.DataTable.Error.RowCount--,>,-1)
+	'Show screen with all employees that didn't get clocked in and why they didn't get clocked in
+	f.Intrinsic.Control.CallSub(screen)
+f.Intrinsic.Control.EndIf
+'f.Data.Dictionary.Close("WC")
+'If WC we are clocking into is not in our custom table
+'Allow them to clock in normally
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("JobStart_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_GUI_CREW.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.JobStart.End
+
+Program.Sub.Screen.Start
+F.Intrinsic.Control.SetErrorHandler("Screen_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.iCount.Declare(long)
+v.Local.iRows.Declare(long)
+v.Local.sRet.Declare(string)
+
+Gui.F_Crew.GSGCCrew.AddGridviewFromDatatable("GridError","Error")
+Gui.F_Crew.GSGCCrew.MainView("GridError")
+'Size the columns
+Gui.F_Crew.GSGCCrew.SetColumnProperty("GridError","Name","MaxWidth",80)
+Gui.F_Crew.GSGCCrew.SetColumnProperty("GridError","Selection","MaxWidth",50)
+'Hide clockin
+Gui.F_Crew.GSGCCrew.SetColumnProperty("GridError","ClockedIn","Visible",False)
+Gui.F_Crew.GSGCCrew.SetColumnProperty("GridError","Lunch","Visible",False)
+Gui.F_Crew.GSGCCrew.SetColumnProperty("GridError","Employee","Visible",False)
+'Let Selection be editable
+Gui.F_Crew.GSGCCrew.SetColumnProperty("GridError","Selection","AllowEdit",False)
+Gui.F_Crew.GSGCCrew.SetColumnProperty("GridError","Selection","ReadOnly",True)
+'Loop through the rows and set the back color to gray if they can't be selected
+Gui.F_Crew.GSGCCrew.GetRowCount("GridError",v.Local.iRows)
+f.Intrinsic.Math.Sub(v.Local.iRows,1,v.Local.iRows)
+f.Intrinsic.Control.For(v.Local.iCount,0,v.Local.iRows,1)
+	'Gray our rows that can't be selected
+	Gui.F_Crew.GSGCCrew.GetCellValue("GridError",3,v.Local.iCount,v.Local.sRet)
+	f.Intrinsic.Control.If(v.Local.sRet,=,"False")
+		'= False so Gray out the row
+		Gui.F_Crew.GSGCCrew.SetRowAppearance("GridError",v.Local.iCount,"BackColor",v.Color.LtGray)
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.Next(v.Local.iCount)
+
+Gui.F_Crew..Show
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Screen_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_GUI_CREW.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Screen.End
+
+Program.Sub.GSGCCrew_RowCellClick.Start
+F.Intrinsic.Control.SetErrorHandler("GSGCCrew_RowCellClick_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.sRet.Declare(string)
+
+'Selection check box was clicked
+f.Intrinsic.Control.If(v.Args.Column,=,"Selection")
+	'We need to see if ClockedIn is True
+	f.Intrinsic.Control.If(v.DataTable.Error(v.Args.RowHandle).ClockedIn!FieldVal,=,"False")
+		'They are not clocked in so don't let them change the selection value
+		f.Data.DataTable.SetValue("Error",v.Args.RowHandle,"Selection",False)
+	f.Intrinsic.Control.Else
+		'They are  clocked in so let them change the selection value
+		f.Data.DataTable.SetValue("Error",v.Args.RowHandle,"Selection",v.Args.CellValue.Not)
+	f.Intrinsic.Control.EndIf
+	
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GSGCCrew_RowCellClick_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_GUI_CREW.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.GSGCCrew_RowCellClick.End
+
+Program.Sub.cmdOverride_Click.Start
+F.Intrinsic.Control.SetErrorHandler("ScreenSU_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.sSQL.Declare(string)
+v.Local.iCount.Declare(long)
+v.Local.sParam.Declare(string)
+v.Local.sTerm.Declare(string)
+
+'If the password is not blank
+f.Intrinsic.Control.If(v.Screen.F_Crew!txtOverride.Text,<>,"")
+	f.Intrinsic.String.Build("SELECT OVERRIDE_PW FROM GCG_4259_OVERRIDE_PW WHERE OVERRIDE_PW = '{0}' ",V.Screen.F_Crew!txtOverride.Text,V.Local.sSQL)
+	f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstPass",v.Local.sSQL)
+	f.Intrinsic.Control.If(v.ODBC.Con!rstPass.EOF,=,False)
+		Gui.F_Crew..Visible(False)
+		'Loop through DT to clock in all people that have Selection checked
+		f.Intrinsic.Control.For(v.Local.iCount,0,v.DataTable.Error.RowCount--,1)
+			f.Intrinsic.Control.If(v.DataTable.Error(v.Local.iCount).Selection!FieldVal,=,True)
+				'Change the employee terminal to the current terminal
+'				F.Intrinsic.String.Build("SELECT STATION FROM EMP_IN_PROCESS_G WHERE EMPLOYEE = '{0}' ",V.DataTable.Error(v.Local.iCount).Employee!FieldValTrim,v.Local.sSQL)
+'				f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstStation",v.Local.sSQL)
+'				f.Intrinsic.Control.If(v.ODBC.Con!rstStation.EOF,=,False)
+'					'We need to update the station
+''					f.ODBC.Con!rstStation.Set!STATION(v.Caller.Terminal.Format00000000)
+''					f.ODBC.Con!rstStation.Update
+'					v.Local.sTerm.Set(v.ODBC.Con!rstStation.FieldValTrim!STATION)
+'				f.Intrinsic.Control.Else
+'					v.Local.sTerm.Set(v.Caller.Terminal)
+'				f.Intrinsic.Control.EndIf
+'				f.ODBC.con!rstStation.Close
+				'Clock them in but we need to do it based on what hook they used.
+				v.Local.sTerm.Set(v.Caller.Terminal)
+				f.Intrinsic.Control.If(v.Caller.Hook,=,15754)
+					f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}!*!{5}",v.Passed.009000.Trim,v.Passed.009001.Trim,v.Passed.009002.Trim,v.Global.sWC.Trim,V.DataTable.Error(v.Local.iCount).Employee!FieldValTrim,v.Local.sTerm,v.Local.sParam)
+				f.Intrinsic.Control.ElseIf(v.Caller.Hook,=,15934)
+					f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}!*!{5}",v.Passed.009000.Trim,v.Passed.009001.Trim,v.Passed.009002.Trim,v.Global.sWC.Trim,V.DataTable.Error(v.Local.iCount).Employee!FieldValTrim,v.Local.sTerm,v.Local.sParam)
+				f.Intrinsic.Control.ElseIf(v.Caller.Hook,=,15951)
+					f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}!*!{5}",v.Passed.009990.Trim,v.Passed.009991.Trim,v.Passed.009992.Trim,v.Global.sWC.Trim,V.DataTable.Error(v.Local.iCount).Employee!FieldValTrim,v.Local.sTerm,v.Local.sParam)
+				f.Intrinsic.Control.EndIf
+				f.Global.General.CallWrapperASync(9201,v.Local.sParam)
+			f.Intrinsic.Control.EndIf
+		f.Intrinsic.Control.Next(v.Local.iCount)
+		f.Intrinsic.Control.CallSub(unload)
+	f.Intrinsic.Control.Else
+		'Password is wrong
+		Gui.F_Crew.txtOverride.Text("")
+		f.Intrinsic.UI.Msgbox("Incorrect Password.","Warning")
+		Gui.F_Crew.txtOverride.SetFocus
+	f.Intrinsic.Control.EndIf
+	f.ODBC.Con!rstPass.Close
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("ScreenSU_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_GUI_CREW.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdOverride_Click.End
+
+Program.Sub.CrewClockIn.Start
+F.Intrinsic.Control.SetErrorHandler("CrewClockIn_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.sSQL.Declare(string)
+v.Local.sBalGroup.Declare(string)
+v.Local.iDay.Declare(long)
+v.Local.sDay.Declare(string)
+v.Local.dDate.Declare(date)
+v.Local.sParam.Declare(string)
+v.Local.sTime.Declare(string)
+v.Local.iCount.Declare(long)
+v.Local.sTerm.Declare(String)
+
+f.Intrinsic.Control.For(v.Local.iCount,0,v.DataTable.Crew.RowCount--,1)
+	'Check to see if they are already in a job
+	f.Intrinsic.String.Build("SELECT JOB, SUFFIX, SEQ, WORKCENTER FROM V_JOBS_IN_PROCESS_G WHERE EMPLOYEE = '{0}' ",V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,V.Local.sSQL)
+	F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstEmpProgress",v.Local.sSQL)
+	'if not in a job
+	f.Intrinsic.Control.If(v.ODBC.Con!rstEmpProgress.EOF,=,True)
+		'Check to make sure they are clocked into T&A
+		F.Intrinsic.String.Build("SELECT * FROM V_EMP_IN_PROCESS_G WHERE EMPLOYEE = '{0}' ",V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,V.Local.sSQL)
+		F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstTA",v.Local.sSQL)
+		f.Intrinsic.Control.If(v.ODBC.Con!rstTA.EOF,=,False)
+			'need to find the balancing group they are part of.
+			f.Intrinsic.String.Build("SELECT PR_BALANCE_GROUP FROM V_EMPLOYEE_MSTR WHERE EMPLOYEE = '{0}' ",V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,V.Local.sSQL)
+			F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstBal",v.Local.sSQL)
+			f.Intrinsic.Control.If(v.ODBC.Con!rstBal.EOF,=,False)
+				v.Local.sBalGroup.Set(v.ODBC.Con!rstBal.FieldValTrim!PR_BALANCE_GROUP)
+			f.Intrinsic.Control.Else
+				v.Local.sBalGroup.Set("")
+			F.Intrinsic.Control.EndIf
+			f.ODBC.Con!rstBal.Close
+			'They are clocked in so check if Shift Start >= now
+'			F.Intrinsic.Date.Weekday(V.Ambient.Date,V.Local.iDay)
+			F.Intrinsic.Date.Weekday(V.Global.dDate,V.Local.iDay)
+			F.Intrinsic.Math.Sub(V.Local.iDay,1,V.Local.iDay)
+'			f.Intrinsic.String.Split("START_SUN*!*START_MON*!*START_TUE*!*START_WED*!*START_THR*!*START_FRI*!*START_SAT","*!*",V.Local.sDay)
+			f.Intrinsic.String.Split("SUN*!*MON*!*TUE*!*WED*!*THR*!*FRI*!*SAT","*!*",V.Local.sDay)
+			f.Intrinsic.String.Build("SELECT START_{0}, STOP_{0} FROM V_LUNCH_SHIFT WHERE DEPT = '{1}' AND SHIFT = '{2}' AND SHIFT_GROUP = '{3}' ",V.Local.sDay(V.Local.iDay).Trim,V.ODBC.Con!rstTA.FieldValTrim!DEPT,V.ODBC.Con!rstTA.FieldValTrim!SHIFT,v.Local.sBalGroup.Trim,V.Local.sSQL)
+			F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstStart",v.Local.sSQL)
+			f.Intrinsic.Control.If(v.ODBC.Con!rstStart.EOF,=,False)
+				'see if the dates are the same
+				f.Intrinsic.Control.If(v.Ambient.Date,=,v.Global.dDate)
+					'if shift start >= now
+					v.Local.dDate.Set(v.ODBC.Con!rstStart.FieldVal!START_[v.Local.sDay(v.Local.iDay).Trim])
+					f.Intrinsic.Control.If(v.Ambient.Now.TimeComp,>=,v.Local.dDate.TimeComp)
+						'Change the employee terminal to the current terminal
+	'					F.Intrinsic.String.Build("SELECT STATION FROM EMP_IN_PROCESS_G WHERE EMPLOYEE = '{0}' ",V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,v.Local.sSQL)
+	'					f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstStation",v.Local.sSQL)
+	'					f.Intrinsic.Control.If(v.ODBC.Con!rstStation.EOF,=,False)
+	'						'We need to update the station
+	''						f.ODBC.Con!rstStation.Set!STATION(v.Caller.Terminal.Format00000000)
+	''						f.ODBC.Con!rstStation.Update
+	'						v.Local.sTerm.Set(v.ODBC.Con!rstStation.FieldValTrim!STATION)
+	'					f.Intrinsic.Control.Else
+	'						v.Local.sTerm.Set(v.Caller.Terminal)
+	'					f.Intrinsic.Control.EndIf
+	'					f.ODBC.con!rstStation.Close
+						'use callwrapper to clock into the job
+						v.Local.sTerm.Set(v.Caller.Terminal)
+						f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}!*!{5}",v.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Args.WC.Trim,V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,v.Local.sTerm,v.Local.sParam)
+						f.Global.General.CallWrapperASync(9201,v.Local.sParam)
+					'Shift Start < now
+					f.Intrinsic.Control.Else
+						f.Intrinsic.String.TimeString(v.Local.dDate,v.Local.sTime)
+						f.Intrinsic.String.RPad(v.Local.sTime,"0",8,v.Local.sTime)
+						'we need to save the employee to datatable because they couldn't clock in yet.
+						f.Data.DataTable.AddRow("Error","Name",v.DataTable.CREW(v.Local.iCount).Name!FieldValTrim,"Employee",V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,"Reason","Employee's shift has not started yet.","Selection",True,"ClockedIn",True,"Lunch",v.Local.sTime)
+					f.Intrinsic.Control.EndIf
+				f.Intrinsic.Control.Else
+					'dates are not the same so we need to check the end time instead
+					'if shift end <= now
+					v.Local.dDate.Set(v.ODBC.Con!rstStart.FieldVal!STOP_[v.Local.sDay(v.Local.iDay).Trim])
+					f.Intrinsic.Control.If(v.Ambient.Now.TimeComp,<=,v.Local.dDate.TimeComp)
+						'Change the employee terminal to the current terminal
+	'					F.Intrinsic.String.Build("SELECT STATION FROM EMP_IN_PROCESS_G WHERE EMPLOYEE = '{0}' ",V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,v.Local.sSQL)
+	'					f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstStation",v.Local.sSQL)
+	'					f.Intrinsic.Control.If(v.ODBC.Con!rstStation.EOF,=,False)
+	'						'We need to update the station
+	''						f.ODBC.Con!rstStation.Set!STATION(v.Caller.Terminal.Format00000000)
+	''						f.ODBC.Con!rstStation.Update
+	'						v.Local.sTerm.Set(v.ODBC.Con!rstStation.FieldValTrim!STATION)
+	'					f.Intrinsic.Control.Else
+	'						v.Local.sTerm.Set(v.Caller.Terminal)
+	'					f.Intrinsic.Control.EndIf
+	'					f.ODBC.con!rstStation.Close
+						'use callwrapper to clock into the job
+						v.Local.sTerm.Set(v.Caller.Terminal)
+						f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}!*!{5}",v.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Args.WC.Trim,V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,v.Local.sTerm,v.Local.sParam)
+						f.Global.General.CallWrapperASync(9201,v.Local.sParam)
+					'Shift Start < now
+					f.Intrinsic.Control.Else
+						f.Intrinsic.String.TimeString(v.Local.dDate,v.Local.sTime)
+						f.Intrinsic.String.RPad(v.Local.sTime,"0",8,v.Local.sTime)
+						'we need to save the employee to datatable because they couldn't clock in yet.
+						f.Data.DataTable.AddRow("Error","Name",v.DataTable.CREW(v.Local.iCount).Name!FieldValTrim,"Employee",V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,"Reason","Employee's shift has already ended.","Selection",True,"ClockedIn",True,"Lunch",v.Local.sTime)
+					f.Intrinsic.Control.EndIf
+				f.Intrinsic.Control.EndIf
+			f.Intrinsic.Control.Else
+				'Change the employee terminal to the current terminal
+'				F.Intrinsic.String.Build("SELECT STATION FROM EMP_IN_PROCESS_G WHERE EMPLOYEE = '{0}' ",V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,v.Local.sSQL)
+'				f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstStation",v.Local.sSQL)
+'				f.Intrinsic.Control.If(v.ODBC.Con!rstStation.EOF,=,False)
+'					'We need to update the station
+''						f.ODBC.Con!rstStation.Set!STATION(v.Caller.Terminal.Format00000000)
+''						f.ODBC.Con!rstStation.Update
+'					v.Local.sTerm.Set(v.ODBC.Con!rstStation.FieldValTrim!STATION)
+'				f.Intrinsic.Control.Else
+'					v.Local.sTerm.Set(v.Caller.Terminal)
+'				f.Intrinsic.Control.EndIf
+'				f.ODBC.con!rstStation.Close
+				'Couldn't find a shift what do I do?
+				v.Local.sTerm.Set(v.Caller.Terminal)
+				f.Intrinsic.String.Build("{0}!*!{1}!*!{2}!*!{3}!*!{4}!*!{5}",v.Args.JOB.Trim,v.Args.SUFFIX.Trim,v.Args.SEQ.Trim,v.Args.WC.Trim,V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,v.Local.sTerm,v.Local.sParam)
+				f.Global.General.CallWrapperASync(9201,v.Local.sParam)
+			f.Intrinsic.Control.EndIf
+			f.ODBC.Con!rstStart.Close
+		'They are not clocked into T&A
+		f.Intrinsic.Control.Else
+			'Save employee to datatable because they aren't clocked into T&A
+			f.Data.DataTable.AddRow("Error","Name",v.DataTable.CREW(v.Local.iCount).Name!FieldValTrim,"Employee",V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,"Reason","Employee is not clocked into Time & Attendance","Selection",False,"ClockedIn",False)
+		f.Intrinsic.Control.EndIf
+		f.ODBC.Con!rstTA.Close
+	'They are clocked into a job
+	f.Intrinsic.Control.Else
+		'Save employee to datatable because they are already clocked into a job
+		f.Intrinsic.String.Build("Employee is active on Workcenter {0}, Job {1}.",v.ODBC.Con!rstEmpProgress.FieldValTrim!WORKCENTER,V.ODBC.Con!rstEmpProgress.FieldValTrim!JOB,V.Local.sParam)
+		f.Data.DataTable.AddRow("Error","Name",v.DataTable.CREW(v.Local.iCount).Name!FieldValTrim,"Employee",V.DataTable.CREW(v.Local.iCount).Employee!FieldValTrim,"Reason",V.Local.sParam,"Selection",False,"ClockedIn",False)
+	F.Intrinsic.Control.EndIf
+	F.ODBC.Con!rstEmpProgress.Close
+f.Intrinsic.Control.Next(v.Local.iCount)
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("CrewClockIn_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_GUI_CREW.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.CrewClockIn.End
+
+Program.Sub.F_WC_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+'Unloading the selection choice so we need to override and close the program
+v.Passed.777777.Set(1)
+f.Intrinsic.Control.CallSub(unload)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_GUI_CREW.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.F_WC_UnLoad.End
+
+Program.Sub.cmdSelection_Click.Start
+F.Intrinsic.Control.SetErrorHandler("F_WC_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.bExist.Declare(boolean)
+
+'Make sure the selection isn't blank
+f.Intrinsic.Control.If(v.Screen.F_WC!ddlWC.Text,<>,"")
+	'They made their selection of WC
+	Gui.F_WC..Visible(False)
+	'Get the WC they chose
+	f.Data.Dictionary.ReturnKeyFromValue("FORMWC",v.Screen.F_WC!ddlWC.Text.Trim,v.Global.sWC)
+	f.Intrinsic.Control.If(v.Global.sWC,=,"")
+		'Not in that dictionary try the other one
+		f.Data.Dictionary.Exists("DTWG",v.Local.bExist)
+		f.Intrinsic.Control.If(v.Local.bExist,=,True)
+			f.Data.Dictionary.ReturnKeyFromValue("DTWG",v.Screen.F_WC!ddlWC.Text.Trim,v.Global.sWC)
+		f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.EndIf
+	
+	f.Intrinsic.Control.SelectCase(v.Caller.Hook)
+
+		f.Intrinsic.Control.Case(15754)
+			'Gui Barcode Job Start
+			f.Intrinsic.Control.CallSub(jobstart,"JOB",V.Passed.009000.Trim,"SUFFIX",V.Passed.009001.Trim,"SEQ",V.Passed.009002.Trim,"EMP",V.Passed.009993.Trim,"WC",V.Global.sWC.Trim)
+			
+		f.Intrinsic.Control.Case(15934)
+			'Gui Work Order Job Start
+			f.Intrinsic.Control.CallSub(jobstart,"JOB",V.Passed.009000.Trim,"SUFFIX",V.Passed.009001.Trim,"SEQ",V.Passed.009002.Trim,"EMP",V.Passed.009993.Trim,"WC",V.Global.sWC.Trim)
+			
+		f.Intrinsic.Control.Case(15951)
+			'Gui Work Center Job Start
+			f.Intrinsic.Control.CallSub(jobstart,"JOB",V.Passed.009990.Trim,"SUFFIX",V.Passed.009991.Trim,"SEQ",V.Passed.009992.Trim,"EMP",V.Passed.009993.Trim,"WC",V.Global.sWC.Trim)
+				
+	f.Intrinsic.Control.EndSelect
+	
+f.Intrinsic.Control.Else
+	'WC is blank so pass the passed vars
+	f.Intrinsic.Control.SelectCase(v.Caller.Hook)
+
+		f.Intrinsic.Control.Case(15754)
+			'Gui Barcode Job Start
+			f.Intrinsic.Control.CallSub(jobstart,"JOB",V.Passed.009000.Trim,"SUFFIX",V.Passed.009001.Trim,"SEQ",V.Passed.009002.Trim,"EMP",V.Passed.009993.Trim,"WC",V.Passed.009003.Trim)
+			
+		f.Intrinsic.Control.Case(15934)
+			'Gui Work Order Job Start
+			f.Intrinsic.Control.CallSub(jobstart,"JOB",V.Passed.009000.Trim,"SUFFIX",V.Passed.009001.Trim,"SEQ",V.Passed.009002.Trim,"EMP",V.Passed.009993.Trim,"WC",V.Passed.009004.Trim)
+			
+		f.Intrinsic.Control.Case(15951)
+			'Gui Work Center Job Start
+			f.Intrinsic.Control.CallSub(jobstart,"JOB",V.Passed.009990.Trim,"SUFFIX",V.Passed.009991.Trim,"SEQ",V.Passed.009992.Trim,"EMP",V.Passed.009993.Trim,"WC",V.Passed.009996.Trim)
+				
+	f.Intrinsic.Control.EndSelect
+f.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("F_WC_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_GUI_CREW.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(f_wc_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdSelection_Click.End
+
+Program.Sub.WCPopulate.Start
+F.Intrinsic.Control.SetErrorHandler("WCPopulate_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.sSQL.Declare(string)
+
+'We need to populate the form with either the work centers for the WG or all of the WC's
+'if passed WC is a WG than only populate with WG's WC's
+'if passed WC is a WC then populate with all WC
+
+'We are going to create a dictionary for WG and WC
+f.Data.Dictionary.CreateFromSQL("FORMWG","Con","SELECT RTRIM(WORK_GROUP) AS WORK_GROUP, RTRIM(WORK_GROUP) AS WORK_GROUP FROM V_WORKGROUP_HEAD ORDER BY WORK_GROUP ASC")
+f.Data.Dictionary.SetDefaultReturn("FORMWG","***NORETURN***")
+'Dictionary for a WC's
+f.Data.Dictionary.CreateFromSQL("FORMWC","Con","SELECT RTRIM(MACHINE) AS MACHINE, RTRIM(MACHINE) + ' - ' + RTRIM(WC_NAME) AS MACHINE FROM V_WORKCENTERS ORDER BY MACHINE ASC")
+f.Data.Dictionary.SetDefaultReturn("FORMWC","***NORETURN***")
+
+'We need to see if our passed variable is a WG
+'f.Intrinsic.Control.If(v.Dictionary.FORMWG![v.Args.WC.Trim],<>,"***NORETURN***")
+'	'It is a WG so we need to populate ddl with that WG's WC's
+'	f.Intrinsic.String.Build("SELECT RTRIM(WORKCENTER) AS WORKCENTER, RTRIM(' ') AS WC_NAME FROM V_WORKGROUP_LINE WHERE WORKGROUP = '{0}' ORDER BY WORKCENTER ASC",V.Args.WC.Trim,v.Local.sSQL)
+'	f.Data.DataTable.CreateFromSQL("DTWG","Con",v.Local.sSQL)
+'	'We have our DT so we are going to fill wc_name from FormWC
+'	f.Data.DataTable.FillFromDictionary("DTWG","FORMWC","WORKCENTER","WC_NAME")
+'	'Everything is filled in so now create our dictionary
+'	f.Data.Dictionary.CreateFromDataTable("DTWG","DTWG","WORKCENTER","WC_NAME")
+'	f.Data.Dictionary.SetDefaultReturn("DTWG","***NORETURN***")
+'	'We need to set the Crew Leader's WC as the selected value
+'	f.Intrinsic.String.Build("SELECT WORK_CENTER FROM GCG_4259_CREW_SCHED WHERE SCHED_DATE = '{0}' AND EMPLOYEE = '{1}'",V.Ambient.Date.PervasiveDate,v.Args.EMP.Trim,v.Local.sSQL)
+'	f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstWC",v.Local.sSQL)
+'	f.Intrinsic.Control.If(v.ODBC.Con!rstWC.EOF,=,False)
+'		'We have a WC so see if it is part of the WG
+'		f.Intrinsic.Control.If(v.Dictionary.DTWG![v.ODBC.Con!rstWC.FieldValTrim!WORK_CENTER],<>,"***NORETURN***")
+'			'We are within the WG so set the selection to ours
+'			Gui.F_WC.ddlWC.Text(v.Dictionary.DTWG![v.ODBC.Con!rstWC.FieldValTrim!WORK_CENTER])
+'		f.Intrinsic.Control.EndIf
+'	f.Intrinsic.Control.EndIf
+'	f.ODBC.Con!rstWC.Close
+'	
+'f.Intrinsic.Control.Else
+	'It is not a WG so populate the ddl with all of the WC's
+	Gui.F_WC.ddlWC.AddItems("Dictionary","FORMWC")
+	'We need to set the selection to the passed WC
+	Gui.F_WC.ddlWC.Text(v.Dictionary.FORMWC![v.Args.WC.Trim])
+'f.Intrinsic.Control.EndIf
+
+'We need to check the Crew Size
+'If <2 than we don't show the screen and keep going
+'f.Intrinsic.String.Build("SELECT CREW_SIZE FROM V_JOB_OPERATIONS WHERE JOB = '{0}' AND SUFFIX = '{1}' AND SEQ = '{2}' ",V.Args.JOB.Trim,V.Args.SUFFIX.Trim,V.Args.SEQ.Trim,V.Local.sSQL)
+'F.ODBC.Connection!Con.OpenLocalRecordsetRO("rstSize",v.Local.sSQL)
+'f.Intrinsic.Control.If(v.ODBC.Con!rstSize.EOF,=,False)
+'	f.Intrinsic.Control.If(v.ODBC.Con!rstSize.FieldVal!CREW_SIZE,<,2)
+'		f.Intrinsic.Control.CallSub(cmdselection_click)
+'	f.Intrinsic.Control.Else
+'		'we need to add something in to also check and see if they are crew leader
+'		'only want to show this screen to the crew leader
+'		f.Intrinsic.String.Build("SELECT CREW_LEADER, WORK_CENTER FROM GCG_4259_CREW_SCHED WHERE EMPLOYEE = '{0}' AND SCHED_DATE = '{1}' AND CREW_LEADER = 1 ",V.Args.EMP.Trim,V.Ambient.Date.PervasiveDate,v.Local.sSQL)
+'		f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstLeader",v.Local.sSQL)
+'		f.Intrinsic.Control.If(v.ODBC.Con!rstLeader.EOF,=,False)
+'			Gui.F_WC..Show
+'		f.Intrinsic.Control.Else
+'			'They are not crew leader so don't display the screen
+'			f.Intrinsic.Control.CallSub(cmdselection_click)
+'		f.Intrinsic.Control.EndIf
+'		f.ODBC.Con!rstLeader.Close
+'	f.Intrinsic.Control.EndIf
+'f.Intrinsic.Control.EndIf
+'f.ODBC.Con!rstSize.Close
+
+'Get the employees charge date
+f.Intrinsic.String.Build("SELECT CHARGE_DATE FROM V_TIME_ATTENDANCE WHERE EMPLOYEE = '{0}' AND DATE_OUT = '1900-01-01' ",V.Args.EMP.Trim,v.Local.sSQL)
+f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstCharge",v.Local.sSQL)
+f.Intrinsic.Control.If(v.ODBC.Con!rstCharge.EOF,=,False)
+	v.Global.dDate.Set(v.ODBC.Con!rstCharge.FieldVal!CHARGE_DATE)
+	'We need to check and see if a crew exists for this date
+	f.Intrinsic.String.Build("SELECT CREW_LEADER, WORK_CENTER FROM GCG_4259_CREW_SCHED WHERE EMPLOYEE = '{0}' AND SCHED_DATE = '{1}' AND CREW_LEADER = 1 ",V.Args.EMP.Trim,v.Global.dDate.PervasiveDate,v.Local.sSQL)
+	f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstLeader",v.Local.sSQL)
+	f.Intrinsic.Control.If(v.ODBC.Con!rstLeader.EOF,=,True)
+		'the crew doesn't exist so we need to go back a day
+		f.Intrinsic.Date.DateAdd("d",-1,v.Global.dDate,v.Global.dDate)
+	f.Intrinsic.Control.EndIf
+	f.ODBC.Con!rstLeader.Close
+	
+f.Intrinsic.Control.Else
+	v.Global.dDate.Set(v.Ambient.Date)
+f.Intrinsic.Control.EndIf
+f.ODBC.Con!rstCharge.Close
+
+f.Intrinsic.String.Build("SELECT CREW_LEADER, WORK_CENTER FROM GCG_4259_CREW_SCHED WHERE EMPLOYEE = '{0}' AND SCHED_DATE = '{1}' AND CREW_LEADER = 1 ",V.Args.EMP.Trim,v.Global.dDate.PervasiveDate,v.Local.sSQL)
+f.ODBC.Connection!Con.OpenLocalRecordsetRO("rstLeader",v.Local.sSQL)
+f.Intrinsic.Control.If(v.ODBC.Con!rstLeader.EOF,=,False)
+	Gui.F_WC..Show
+f.Intrinsic.Control.Else
+	'They are not crew leader so don't display the screen
+	f.Intrinsic.Control.CallSub(cmdselection_click)
+f.Intrinsic.Control.EndIf
+f.ODBC.Con!rstLeader.Close
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("WCPopulate_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_GUI_CREW.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(f_wc_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.WCPopulate.End
+
+Program.Sub.Comments.Start
+${$0$}$$}$SS1$}$12/8/2016 7:57:21 AM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$This will be a custom project that at time of shipment will, based on the Serial Numbers being shipped, retrieve the document control pdf.  Once the pdf are retrieved each file will be split into individual pages, the page size changed to legal, and a watermark added to the bottom right of the page that includes the Customer PO, Serial Number of Finished Goods, Sales Order Number, and Batch ID.  After the Split files are generated for all the document control PDF the user can then select either print, email, or save the collection to the shipment, and any combination can be selected.
+
+Program.Sub.Comments.End
