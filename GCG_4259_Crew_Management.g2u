@@ -1,0 +1,1510 @@
+Program.Sub.ScreenSU.Start
+Gui.SS_Form1..create
+Gui.SS_Form1..caption("Crew Management For SFDC/GUI")
+Gui.SS_Form1..size(7710,9765)
+Gui.SS_Form1..position(0,0)
+Gui.SS_Form1..alwaysontop(False)
+Gui.SS_Form1..fontname("Arial")
+Gui.SS_Form1..fontsize(8)
+Gui.SS_Form1..forecolor(0)
+Gui.SS_Form1..BackColor(-2147483633)
+Gui.SS_Form1..controlbox(True)
+Gui.SS_Form1..maxbutton(False)
+Gui.SS_Form1..minbutton(False)
+Gui.SS_Form1..mousepointer(0)
+Gui.SS_Form1..moveable(True)
+Gui.SS_Form1..sizeable(False)
+Gui.SS_Form1..ShowInTaskBar(True)
+Gui.SS_Form1..titlebar(True)
+Gui.SS_Form1..MinX(0)
+Gui.SS_Form1..MinY(0)
+Gui.SS_Form1..Event(UnLoad,SS_Form1_UnLoad)
+Gui.SS_Form1.lbl_txt_WC.create(label,"Work Center",True,1800,195,1,1380,735,True,0,Arial,8,-2147483633,0)
+Gui.SS_Form1.lbl_txt_WC.LabelStretch(True)
+Gui.SS_Form1.txt_WC.create(textbox,"",True,1800,300,1,1380,930,True,0,Arial,8,16777215,1)
+Gui.SS_Form1.txt_WC.tabstop(True)
+Gui.SS_Form1.txt_WC.tabindex(1)
+Gui.SS_Form1.txt_WC.Event(LostFocus,txt_WC_LostFocus)
+Gui.SS_Form1.txt_WC.Event(GotFocus,txt_WC_GotFocus)
+Gui.SS_Form1.cmd_txt_WC.create(button)
+Gui.SS_Form1.cmd_txt_WC.Caption("^")
+Gui.SS_Form1.cmd_txt_WC.visible(True)
+Gui.SS_Form1.cmd_txt_WC.size(330,330)
+Gui.SS_Form1.cmd_txt_WC.position(3255,930)
+Gui.SS_Form1.cmd_txt_WC.enabled(True)
+Gui.SS_Form1.cmd_txt_WC.fontname("Arial")
+Gui.SS_Form1.cmd_txt_WC.fontsize(8)
+Gui.SS_Form1.cmd_txt_WC.tabstop(True)
+Gui.SS_Form1.cmd_txt_WC.tabindex(2)
+Gui.SS_Form1.cmd_txt_WC.Event(Click,cmd_txt_WC_Click)
+Gui.SS_Form1.lbl_dtp_Date.create(label,"Date",True,1800,195,1,105,135,True,0,Arial,8,-2147483633,0)
+Gui.SS_Form1.lbl_dtp_Date.LabelStretch(True)
+Gui.SS_Form1.dtp_Date.create(datepicker)
+Gui.SS_Form1.dtp_Date.visible(True)
+Gui.SS_Form1.dtp_Date.size(1800,345)
+Gui.SS_Form1.dtp_Date.position(105,330)
+Gui.SS_Form1.dtp_Date.enabled(True)
+Gui.SS_Form1.dtp_Date.fontname("Arial")
+Gui.SS_Form1.dtp_Date.tabstop(True)
+Gui.SS_Form1.dtp_Date.tabindex(3)
+Gui.SS_Form1.dtp_Date.Event(Change,dtp_Date_Change)
+Gui.SS_Form1.lbl_txt_Emp.create(label,"Employee",True,1800,195,1,105,1455,True,0,Arial,8,-2147483633,0)
+Gui.SS_Form1.lbl_txt_Emp.LabelStretch(True)
+Gui.SS_Form1.txt_Emp.create(textbox,"",True,1800,300,1,105,1650,True,0,Arial,8,16777215,1)
+Gui.SS_Form1.txt_Emp.tabstop(True)
+Gui.SS_Form1.txt_Emp.tabindex(4)
+Gui.SS_Form1.txt_Emp.Event(LostFocus,txt_Emp_LostFocus)
+Gui.SS_Form1.cmd_txt_Emp.create(button)
+Gui.SS_Form1.cmd_txt_Emp.Caption("^")
+Gui.SS_Form1.cmd_txt_Emp.visible(True)
+Gui.SS_Form1.cmd_txt_Emp.size(330,330)
+Gui.SS_Form1.cmd_txt_Emp.position(1980,1650)
+Gui.SS_Form1.cmd_txt_Emp.enabled(True)
+Gui.SS_Form1.cmd_txt_Emp.fontname("Arial")
+Gui.SS_Form1.cmd_txt_Emp.fontsize(8)
+Gui.SS_Form1.cmd_txt_Emp.tabstop(True)
+Gui.SS_Form1.cmd_txt_Emp.tabindex(5)
+Gui.SS_Form1.cmd_txt_Emp.Event(Click,cmd_txt_Emp_Click)
+Gui.SS_Form1.lbl_txt_EmpName.create(label,"Name",True,1800,195,1,2460,1455,True,0,Arial,8,-2147483633,0)
+Gui.SS_Form1.lbl_txt_EmpName.LabelStretch(True)
+Gui.SS_Form1.txt_EmpName.create(textbox,"",True,1800,300,1,2460,1650,True,0,Arial,8,16777215,1)
+Gui.SS_Form1.txt_EmpName.tabstop(True)
+Gui.SS_Form1.txt_EmpName.tabindex(6)
+Gui.SS_Form1.txt_EmpName.Event(LostFocus,txt_EmpName_LostFocus)
+Gui.SS_Form1.chk_CrewLead.create(checkbox)
+Gui.SS_Form1.chk_CrewLead.Caption("Crew Leader")
+Gui.SS_Form1.chk_CrewLead.visible(True)
+Gui.SS_Form1.chk_CrewLead.size(1800,300)
+Gui.SS_Form1.chk_CrewLead.position(105,1980)
+Gui.SS_Form1.chk_CrewLead.enabled(True)
+Gui.SS_Form1.chk_CrewLead.fontname("Arial")
+Gui.SS_Form1.chk_CrewLead.fontsize(8)
+Gui.SS_Form1.chk_CrewLead.tabstop(True)
+Gui.SS_Form1.chk_CrewLead.tabindex(7)
+Gui.SS_Form1.lbl_txt_ScanBadge.create(label,"Scan Badge",True,1800,195,1,105,2535,True,0,Arial,8,-2147483633,0)
+Gui.SS_Form1.lbl_txt_ScanBadge.LabelStretch(True)
+Gui.SS_Form1.txt_ScanBadge.create(textbox,"",True,1800,300,1,105,2730,True,0,Arial,8,16777215,1)
+Gui.SS_Form1.txt_ScanBadge.tabstop(True)
+Gui.SS_Form1.txt_ScanBadge.tabindex(8)
+Gui.SS_Form1.txt_ScanBadge.Event(KeyPressEnter,txt_ScanBadge_LostFocus)
+Gui.SS_Form1.GsGridControl1.Create(GsGridControl)
+Gui.SS_Form1.GsGridControl1.Size(7290,5445)
+Gui.SS_Form1.GsGridControl1.Position(105,3240)
+Gui.SS_Form1.GsGridControl1.Event(RowCellClick,GsGridControl1_RowCellClick)
+Gui.SS_Form1.cmd_DelWCSch.Create(Button)
+Gui.SS_Form1.cmd_DelWCSch.Size(1740,375)
+Gui.SS_Form1.cmd_DelWCSch.Position(105,8790)
+Gui.SS_Form1.cmd_DelWCSch.Caption("Delete WC Sched")
+Gui.SS_Form1.cmd_DelWCSch.Event(Click,cmd_DelWCSch_Click)
+Gui.SS_Form1.cmd_CopyWCSch2.Create(Button)
+Gui.SS_Form1.cmd_CopyWCSch2.Size(1740,375)
+Gui.SS_Form1.cmd_CopyWCSch2.Position(1890,8790)
+Gui.SS_Form1.cmd_CopyWCSch2.Caption("Copy WC Sched")
+Gui.SS_Form1.cmd_CopyWCSch2.Event(Click,cmd_CopyWCSch2_Click)
+Gui.SS_Form1.cmd_AddUpdate.Create(Button)
+Gui.SS_Form1.cmd_AddUpdate.Size(1095,375)
+Gui.SS_Form1.cmd_AddUpdate.Position(1980,2700)
+Gui.SS_Form1.cmd_AddUpdate.Caption("Add/Update")
+Gui.SS_Form1.cmd_AddUpdate.Event(Click,cmd_AddUpdate_Click)
+Gui.SS_Form1.cmd_Delete.Create(Button)
+Gui.SS_Form1.cmd_Delete.Size(1095,375)
+Gui.SS_Form1.cmd_Delete.Position(3150,2700)
+Gui.SS_Form1.cmd_Delete.Caption("Delete")
+Gui.SS_Form1.cmd_Delete.Event(Click,cmd_Delete_Click)
+Gui.SS_Form1.cmd_PW.Create(Button)
+Gui.SS_Form1.cmd_PW.Size(1260,375)
+Gui.SS_Form1.cmd_PW.Position(6150,8790)
+Gui.SS_Form1.cmd_PW.Caption("Override PW")
+Gui.SS_Form1.cmd_PW.Event(Click,cmd_PW_Click)
+Gui.SS_Form1.lbl1.Create(Label,"Default Crew Size",True,1935,255,0,3735,735,True,0,"Arial",8,-2147483633,0)
+Gui.SS_Form1.txtCrewSize.Create(TextBox,"",True,630,300,0,3735,930,True,0,"Arial",8,-2147483643,1)
+Gui.SS_Form1.txtCrewSize.Locked(True)
+Gui.SS_Form1.ddl_Shift.Create(DropDownList)
+Gui.SS_Form1.ddl_Shift.Size(1095,330)
+Gui.SS_Form1.ddl_Shift.Position(105,930)
+Gui.SS_Form1.ddl_Shift.Event(Click,ddl_Shift_Click)
+Gui.SS_Form1.lblShift.Create(Label,"Shift",True,1080,255,0,105,735,True,0,"Arial",8,-2147483633,0)
+Gui.SS_Form1.cmd_UploadWCSch.Create(Button)
+Gui.SS_Form1.cmd_UploadWCSch.Size(1740,375)
+Gui.SS_Form1.cmd_UploadWCSch.Position(3675,8790)
+Gui.SS_Form1.cmd_UploadWCSch.Caption("Upload WC(s) Sched")
+Gui.SS_Form1.cmd_UploadWCSch.Event(Click,cmd_UploadWCSch_Click)
+Gui.SS_Form2..create
+Gui.SS_Form2..caption("Copy Work Center")
+Gui.SS_Form2..size(4605,1825)
+Gui.SS_Form2..position(0,0)
+Gui.SS_Form2..alwaysontop(False)
+Gui.SS_Form2..fontname("Arial")
+Gui.SS_Form2..fontsize(8)
+Gui.SS_Form2..forecolor(0)
+Gui.SS_Form2..BackColor(-2147483633)
+Gui.SS_Form2..controlbox(True)
+Gui.SS_Form2..maxbutton(False)
+Gui.SS_Form2..minbutton(False)
+Gui.SS_Form2..mousepointer(0)
+Gui.SS_Form2..moveable(True)
+Gui.SS_Form2..sizeable(False)
+Gui.SS_Form2..ShowInTaskBar(True)
+Gui.SS_Form2..titlebar(True)
+Gui.SS_Form2..MinX(0)
+Gui.SS_Form2..MinY(0)
+Gui.SS_Form2..Event(UnLoad,SS_Form2_UnLoad)
+Gui.SS_Form2.lbl_txt_CopyWC.create(label,"Work Center",True,1800,200,1,100,135,True,0,Arial,8,-2147483633,0)
+Gui.SS_Form2.lbl_txt_CopyWC.LabelStretch(True)
+Gui.SS_Form2.txt_CopyWC.create(textbox,"",True,1800,300,1,105,330,True,0,Arial,8,16777215,1)
+Gui.SS_Form2.txt_CopyWC.tabstop(True)
+Gui.SS_Form2.txt_CopyWC.tabindex(1)
+Gui.SS_Form2.txt_CopyWC.Event(LostFocus,txt_CopyWC_LostFocus)
+Gui.SS_Form2.cmd_txt_CopyWC.create(button)
+Gui.SS_Form2.cmd_txt_CopyWC.Caption("^")
+Gui.SS_Form2.cmd_txt_CopyWC.visible(True)
+Gui.SS_Form2.cmd_txt_CopyWC.size(330,330)
+Gui.SS_Form2.cmd_txt_CopyWC.position(1980,330)
+Gui.SS_Form2.cmd_txt_CopyWC.enabled(True)
+Gui.SS_Form2.cmd_txt_CopyWC.fontname("Arial")
+Gui.SS_Form2.cmd_txt_CopyWC.fontsize(8)
+Gui.SS_Form2.cmd_txt_CopyWC.tabstop(True)
+Gui.SS_Form2.cmd_txt_CopyWC.tabindex(2)
+Gui.SS_Form2.cmd_txt_CopyWC.Event(Click,cmd_txt_CopyWC_Click)
+Gui.SS_Form2.lbl_dtp_CopyDate.create(label,"Copy to Date",True,1800,200,1,2455,135,True,0,Arial,8,-2147483633,0)
+Gui.SS_Form2.lbl_dtp_CopyDate.LabelStretch(True)
+Gui.SS_Form2.dtp_CopyDate.create(datepicker)
+Gui.SS_Form2.dtp_CopyDate.visible(True)
+Gui.SS_Form2.dtp_CopyDate.size(1800,345)
+Gui.SS_Form2.dtp_CopyDate.position(2460,330)
+Gui.SS_Form2.dtp_CopyDate.enabled(True)
+Gui.SS_Form2.dtp_CopyDate.fontname("Arial")
+Gui.SS_Form2.dtp_CopyDate.tabstop(True)
+Gui.SS_Form2.dtp_CopyDate.tabindex(3)
+Gui.SS_Form2.dtp_CopyDate.Event(Change,dtp_CopyDate_Change)
+Gui.SS_Form2.cmd_Copy.create(button)
+Gui.SS_Form2.cmd_Copy.Caption("Copy")
+Gui.SS_Form2.cmd_Copy.visible(True)
+Gui.SS_Form2.cmd_Copy.size(1005,360)
+Gui.SS_Form2.cmd_Copy.position(105,855)
+Gui.SS_Form2.cmd_Copy.enabled(True)
+Gui.SS_Form2.cmd_Copy.fontname("Arial")
+Gui.SS_Form2.cmd_Copy.fontsize(8)
+Gui.SS_Form2.cmd_Copy.tabstop(True)
+Gui.SS_Form2.cmd_Copy.tabindex(4)
+Gui.SS_Form2.cmd_Copy.Event(Click,cmd_Copy_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Variable.Global.iRec_ID.Declare(Long,0)
+v.Global.sPrevWC.Declare(string)
+v.Global.sPrevLine.Declare(string)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sSql.Declare(String)
+V.Local.iIndex.Declare(Long,1)
+v.Local.sFile.Declare(string)
+V.Local.bRet.Declare(Boolean)
+
+'opening connection
+F.ODBC.Connection!con.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+			
+f.Intrinsic.Control.SelectCase(v.Caller.Hook)
+	f.Intrinsic.Control.Case(15710)
+		'GUI Populate Hook
+		'Populate Scipt 1 with Crew maint
+		v.Passed.000016.Set("Crew Maint")
+		
+		F.Intrinsic.Control.CallSub(SS_Form1_UnLoad)
+	f.Intrinsic.Control.CaseElse
+		f.Intrinsic.Control.If(v.Caller.Switches,<>,"L")
+			'enable override password button if user is a supervsr
+			F.Intrinsic.Control.If(V.Caller.User,=,"SUPERVSR")
+				Gui.SS_Form1.cmd_PW.Visible(True)
+			F.Intrinsic.Control.Else
+				Gui.SS_Form1.cmd_PW.Visible(False)
+			F.Intrinsic.Control.EndIf
+			
+			'populating shift dropdown list
+			V.Local.sSql.Set("Select distinct shift from v_lunch_shift")
+			F.ODBC.Connection!con.OpenLocalRecordsetRO("rst",V.Local.sSql)
+			Gui.SS_Form1.ddl_Shift.AddItem(" ",0)
+			F.Intrinsic.Control.DoUntil(V.ODBC.con!rst.EOF,=,True)
+				Gui.SS_Form1.ddl_Shift.AddItem(V.ODBC.con!rst.FieldVal!Shift,V.Local.iIndex)
+				F.Intrinsic.Math.Add(V.Local.iIndex,1,V.Local.iIndex)
+				F.ODBC.con!rst.MoveNext
+			F.Intrinsic.Control.Loop
+	
+			'checking presence of excel
+			F.Automation.MSExcel.CheckPresence(V.Local.bRet)
+			F.Intrinsic.Control.If(V.Local.bRet,=,True)
+				Gui.SS_Form1.cmd_UploadWCSch.Enabled(True)
+			F.Intrinsic.Control.Else
+				Gui.SS_Form1.cmd_UploadWCSch.Enabled(False)
+			F.Intrinsic.Control.EndIf
+			
+			'get Rec_ID for adding new records
+			F.ODBC.Connection!con.GetID("GCG_4259_Crew_Sched","Rec_ID",False,V.Global.iRec_ID)
+			
+			'creating the dictionaries to autoadditem to test boxes.
+			F.Intrinsic.Control.CallSub(create_dictonary)
+			
+			'locking name text box
+			Gui.SS_Form1.txt_EmpName.Locked(True)
+			
+			'disableing buttons on screen till they need to be enabled
+			Gui.SS_Form1.txt_Emp.Enabled(False)
+			Gui.SS_Form1.txt_EmpName.Enabled(False)
+			Gui.SS_Form1.cmd_txt_Emp.Enabled(False)
+			Gui.SS_Form1.chk_CrewLead.Enabled(False)
+			Gui.SS_Form1.cmd_Delete.Enabled(False)
+			Gui.SS_Form1.cmd_AddUpdate.Enabled(False)
+			Gui.SS_Form1.txt_ScanBadge.Enabled(False)
+			Gui.SS_Form1.txt_WC.Enabled(False)
+			Gui.SS_Form1.cmd_txt_WC.Enabled(False)
+			
+			Gui.SS_Form2.cmd_Copy.Enabled(False)
+	
+			Gui.SS_Form1..Show
+		f.Intrinsic.Control.Else
+			'They are clicking on the clear hook menu item
+			f.Intrinsic.String.Build("{0}\CrewLock.txt",v.Caller.FilesDir,v.Local.sFile)
+			f.Intrinsic.File.String2File(v.Local.sFile,"")
+		f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.EndSelect
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Main.End
+
+Program.Sub.cmd_txt_WC_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_txt_WC_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sRet.Declare(String)
+
+'browser list is parsed for the type-ahead substring as it is being typed
+F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+
+v.Global.sPrevWC.Set(v.Screen.SS_Form1!txt_WC.Text)
+
+F.Intrinsic.UI.Browser(400,"",V.Local.sRet)
+
+F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	Gui.SS_Form1.txt_WC.Text(V.Local.sRet)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.CallSub(txt_wc_lostfocus)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmd_txt_WC_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmd_txt_WC_Click.End
+
+Program.Sub.cmd_txt_Emp_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_txt_Emp_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sRet.Declare(String)
+
+'browser list is parsed for the type-ahead substring as it is being typed
+F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+
+F.Intrinsic.UI.Browser(51,"",V.Local.sRet)
+
+F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	Gui.SS_Form1.txt_Emp.Text(V.Local.sRet(0))
+	Gui.SS_Form1.txt_EmpName.Text(V.Local.sRet(1))
+F.Intrinsic.Control.EndIf
+
+'calling create employee lost focus event
+F.Intrinsic.Control.CallSub(txt_emp_lostfocus)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmd_txt_Emp_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmd_txt_Emp_Click.End
+
+Program.Sub.SS_Form1_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("SS_Form1_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.sFile.Declare(string)
+v.Local.sLines.Declare(string)
+
+
+f.Intrinsic.String.Build("{0}\CrewLock.txt",v.Caller.FilesDir,v.Local.sFile)
+f.Intrinsic.File.File2String(v.Local.sFile,v.Local.sLines)
+f.Intrinsic.String.Replace(v.Local.sLines,v.Global.sPrevLine,"",v.Local.sLines)
+f.Intrinsic.File.String2File(v.Local.sFile,v.Local.sLines)
+
+F.Intrinsic.Debug.Stop
+
+'closing connection
+F.ODBC.Connection!con.Close
+'ending the program
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("SS_Form1_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.SS_Form1_UnLoad.End
+
+Program.Sub.Create_Dictonary.Start
+F.Intrinsic.Control.SetErrorHandler("Create_Dictonary_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sSql.Declare(String)
+
+'creating dictionaries
+V.Local.sSql.Set("Select UCASE(Machine) AS Machine, UCASE(Machine) as WorkCenter From V_Workcenters Order by WorkCenter")
+F.Data.Dictionary.CreateFromSQL("WC","con",V.Local.sSql,16)
+
+V.Local.sSql.Set("Select Employee, Employee From V_Employee_Mstr Where date_termination = '1900-01-01' Order by Employee")
+F.Data.Dictionary.CreateFromSQL("Emp","con",V.Local.sSql,16)
+
+V.Local.sSql.Set("Select Employee, rtrim(ucase(Name)) From V_Employee_Mstr Where date_termination = '1900-01-01' Order by Employee")
+F.Data.Dictionary.CreateFromSQL("EmpName","con",V.Local.sSql,16)
+
+'adding auto complete to text boxes
+Gui.SS_Form1.txt_WC.AddAutoCompleteItem("WC","Dictionary")
+Gui.SS_Form2.txt_CopyWC.AddAutoCompleteItem("WC","Dictionary")
+Gui.SS_Form1.txt_Emp.AddAutoCompleteItem("Emp","Dictionary")
+Gui.SS_Form1.txt_EmpName.AddAutoCompleteItem("EmpName","Dictionary")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Create_Dictonary_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Create_Dictonary.End
+
+Program.Sub.txt_WC_LostFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txt_WC_LostFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sRet.Declare(String)
+v.Local.sSQL.Declare(string)
+v.Local.sFile.Declare(string)
+v.Local.sLines.Declare(string)
+v.Local.bExist.Declare(boolean)
+v.Local.sUser.Declare(string)
+v.Local.sExample.Declare(string)
+
+Gui.SS_Form1.txt_WC.Text(v.Screen.SS_Form1!txt_WC.Text.UCase)
+V.Local.sRet.Set(V.Screen.SS_Form1!txt_WC.Text)
+
+F.Intrinsic.Control.If(V.Local.sRet.Length,>,0)
+	
+	'We need to check and see if we have a lock file for this shift, day, and WC.
+	f.Intrinsic.String.Build("{0}\CrewLock.txt",v.Caller.FilesDir,v.Local.sFile)
+	f.Intrinsic.File.Exists(v.Local.sFile,v.Local.bExist)
+	f.Intrinsic.Control.If(v.Local.bExist,=,True)
+		f.Intrinsic.File.File2String(v.Local.sFile,v.Local.sLines)
+		f.Intrinsic.String.Replace(v.Local.sLines,v.Global.sPrevLine,"",v.Local.sLines)
+		f.Intrinsic.String.Build("{0}*!*{1}*!*{2}*!*",v.Screen.SS_Form1!dtp_Date.Value,v.Screen.SS_Form1!ddl_Shift.Text,v.Screen.SS_Form1!txt_WC.Text,v.Local.sExample)
+		f.Intrinsic.String.IsInString(v.Local.sLines,v.Local.sExample,True,v.Local.bExist)
+	f.Intrinsic.Control.Else
+		v.Local.bExist.Set(False)
+	f.Intrinsic.Control.EndIf
+	
+	f.Intrinsic.Control.If(v.Local.bExist,=,False)
+		f.Intrinsic.String.Build("{4}{5}{0}*!*{1}*!*{2}*!*{3}",v.Screen.SS_Form1!dtp_Date.Value,v.Screen.SS_Form1!ddl_Shift.Text,v.Screen.SS_Form1!txt_WC.Text,v.Caller.User,v.Local.sLines,v.Ambient.NewLine,v.Local.sLines)
+		f.Intrinsic.File.String2File(v.Local.sFile,v.Local.sLines)
+		f.Intrinsic.String.Build("{0}*!*{1}*!*{2}*!*{3}",v.Screen.SS_Form1!dtp_Date.Value,v.Screen.SS_Form1!ddl_Shift.Text,v.Screen.SS_Form1!txt_WC.Text,v.Caller.User,v.Global.sPrevLine)
+		'calling create datable sub since the wc has been changed.
+		F.Intrinsic.Control.CallSub(create_datatable)
+		Gui.SS_Form1.txt_Emp.Enabled(True)
+		Gui.SS_Form1.txt_EmpName.Enabled(True)
+		Gui.SS_Form1.cmd_txt_Emp.Enabled(True)
+		Gui.SS_Form1.txt_ScanBadge.Enabled(True)
+		f.Intrinsic.String.Build("SELECT CREWSIZE FROM V_WORKCENTERS WHERE MACHINE = '{0}' ",V.Local.sRet.Trim,V.Local.sSQL)
+		f.ODBC.Connection!con.OpenLocalRecordsetRO("rstCrew",v.Local.sSQL)
+		f.Intrinsic.Control.If(v.ODBC.con!rstCrew.EOF,=,False)
+			Gui.SS_Form1.txtCrewSize.Text(v.ODBC.con!rstCrew.FieldValLong!CREWSIZE)
+		F.Intrinsic.Control.EndIf
+		f.ODBC.con!rstCrew.Close
+		Gui.SS_Form1.txt_ScanBadge.SetFocus
+	f.Intrinsic.Control.Else
+		'Some one is already logged into the wc
+		f.Intrinsic.UI.Msgbox("Date, Shift, and WC are already in use.","Warning")
+		Gui.SS_Form1.txt_WC.Text(v.Global.sPrevWC)
+	f.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.Else
+	Gui.SS_Form1.txt_Emp.Enabled(False)
+	Gui.SS_Form1.txt_EmpName.Enabled(False)
+	Gui.SS_Form1.cmd_txt_Emp.Enabled(False)
+	Gui.SS_Form1.chk_CrewLead.Enabled(False)
+	Gui.SS_Form1.cmd_Delete.Enabled(False)
+	Gui.SS_Form1.cmd_AddUpdate.Enabled(False)
+	Gui.SS_Form1.txt_ScanBadge.Enabled(False)
+F.Intrinsic.Control.EndIf
+
+Gui.SS_Form1.txt_Emp.Text("")
+Gui.SS_Form1.txt_EmpName.Text("")
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txt_WC_LostFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.txt_WC_LostFocus.End
+
+Program.Sub.txt_Emp_LostFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txt_Emp_LostFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sSql.Declare(String)
+V.Local.sRet.Declare(String)
+
+V.Local.sRet.Set(V.Screen.SS_Form1!txt_Emp.Text)
+
+F.Intrinsic.String.Build("Select Employee, Name From V_Employee_Mstr Where Employee = '{0}'",V.Screen.SS_Form1!txt_Emp.Text,V.Local.sSql)
+
+'getting and setting employee name
+F.Intrinsic.Control.If(V.Local.sRet.Length,>,0)
+	F.ODBC.Connection!con.OpenLocalRecordsetRO("rst",V.Local.sSql)
+	F.Intrinsic.Control.If(V.ODBC.con!rst.EOF,=,False)
+		Gui.SS_Form1.txt_EmpName.Text(V.ODBC.con!rst.FieldValTrim!Name)
+		'enableing the delete and add buttons
+		Gui.SS_Form1.cmd_Delete.Enabled(True)
+		Gui.SS_Form1.chk_CrewLead.Enabled(True)
+		Gui.SS_Form1.cmd_AddUpdate.Enabled(True)
+		F.ODBC.con!rst.Close
+	F.Intrinsic.Control.Else
+		F.ODBC.con!rst.Close
+		F.Intrinsic.UI.Msgbox("Employee Not Found in Employee Master")
+		Gui.SS_Form1.txt_Emp.Text("")
+		Gui.SS_Form1.txt_EmpName.Text("")
+		Gui.SS_Form1.cmd_Delete.Enabled(False)
+		Gui.SS_Form1.chk_CrewLead.Enabled(False)
+		Gui.SS_Form1.cmd_AddUpdate.Enabled(False)
+		Gui.SS_Form1.chk_CrewLead.Value(0)
+	F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.Else
+	Gui.SS_Form1.txt_EmpName.Text("")
+	Gui.SS_Form1.cmd_Delete.Enabled(False)
+	Gui.SS_Form1.chk_CrewLead.Enabled(False)
+	Gui.SS_Form1.cmd_AddUpdate.Enabled(False)
+	Gui.SS_Form1.chk_CrewLead.Value(0)
+F.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txt_Emp_LostFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.txt_Emp_LostFocus.End
+
+Program.Sub.txt_EmpName_LostFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txt_EmpName_LostFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+'V.Local.sRet.Declare(String)
+'
+'V.Local.sRet.Set(V.Screen.SS_Form1!txt_EmpName.Text)
+'
+'F.Intrinsic.Control.If(V.Local.sRet.Length,>,0)
+'	F.Data.Dictionary.SetDefaultReturn("EmpName","-1")
+'	
+'	F.Data.Dictionary.ReturnKeyFromValue("EmpName",V.Local.sRet.Trim,True,V.Local.sRet)
+'	
+'	F.Intrinsic.Control.If(V.Local.sRet,=,"-1")
+'		Gui.SS_Form1.txt_Emp.Text("")
+'		Gui.SS_Form1.txt_EmpName.Text("")
+'	F.Intrinsic.Control.Else
+'		Gui.SS_Form1.txt_Emp.Text(V.Local.sRet)
+'		Gui.SS_Form1.cmd_Delete.Enabled(True)
+'		Gui.SS_Form1.cmd_AddUpdate.Enabled(True)
+'		Gui.SS_Form1.chk_CrewLead.Enabled(True)
+'	F.Intrinsic.Control.EndIf	
+'F.Intrinsic.Control.Else
+'	Gui.SS_Form1.txt_Emp.Text("")
+'	Gui.SS_Form1.cmd_Delete.Enabled(False)
+'	Gui.SS_Form1.cmd_AddUpdate.Enabled(False)
+'	Gui.SS_Form1.chk_CrewLead.Enabled(False)
+'F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txt_EmpName_LostFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.txt_EmpName_LostFocus.End
+
+Program.Sub.txt_ScanBadge_LostFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txt_ScanBadge_LostFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sRet.Declare(String)
+
+V.Local.sRet.Set(V.Screen.SS_Form1!txt_ScanBadge.Text)
+
+F.Intrinsic.Control.If(V.Local.sRet.Length,>,0)
+	F.Intrinsic.String.Split(V.Local.sRet,"$",V.Local.sRet)
+	'setting scanned employee to number to employee text box
+	Gui.SS_Form1.txt_Emp.Text(V.Local.sRet(1))
+	'calling employee lost focus event
+	F.Intrinsic.Control.CallSub(txt_emp_lostfocus)
+	Gui.SS_Form1.txt_ScanBadge.Text("")
+
+	'setting focus to add/update button
+'	Gui.SS_Form1.cmd_AddUpdate.SetFocus
+	f.Intrinsic.Control.If(v.Screen.SS_Form1!cmd_AddUpdate.Enabled,=,True)
+		f.Intrinsic.Control.CallSub(cmd_addupdate_click)
+	f.Intrinsic.Control.EndIf
+	Gui.SS_Form1.txt_ScanBadge.SetFocus
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txt_ScanBadge_LostFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.txt_ScanBadge_LostFocus.End
+
+Program.Sub.SaveToDB.Start
+F.Intrinsic.Control.SetErrorHandler("SaveToDB_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.iCount.Declare(long)
+
+F.Data.DataTable.AddExpressionColumn("SaveCrew","CL","Long","IIF(Crew_Leader = True,1,0)")
+'Delete blank employee from the grid
+f.Data.DataView.Create("SaveCrew","DelEmp",22,"Employee = '' or Employee is NULL","")
+f.Intrinsic.Control.If(v.DataView.SaveCrew!DelEmp.RowCount,>,0)
+	'We have a blank employee so delete it
+	f.Intrinsic.Control.For(v.Local.iCount,v.DataView.SaveCrew!DelEmp.RowCount--,0,-1)
+		f.Data.DataTable.DeleteRow("SaveCrew",v.DataView.SaveCrew!DelEmp(v.Local.iCount).DataTableIndex)
+	f.Intrinsic.Control.Next(v.Local.iCount)
+f.Intrinsic.Control.EndIf
+f.Data.DataView.Close("SaveCrew","DelEmp")
+'All blanks should be deleted so we should be good to save.
+
+F.Data.DataTable.SaveToDB("SaveCrew","con","GCG_4259_Crew_Sched","Rec_ID",7,"Rec_ID@!@Rec_ID*!*Employee@!@Employee*!*Name@!@Name*!*Work_Center@!@Work_Center*!*Shift@!@Shift*!*Sched_Date@!@Sched_Date*!*CL@!@Crew_Leader")
+
+F.Data.DataTable.Close("SaveCrew")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("SaveToDB_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.SaveToDB.End
+
+Program.Sub.Create_Datatable.Start
+F.Intrinsic.Control.SetErrorHandler("Create_Datatable_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sSql.Declare(String)
+V.Local.dDate.Declare(Date)
+V.Local.sWC.Declare(String)
+
+V.Local.sWC.Set(V.Screen.SS_Form1!txt_WC.Text)
+V.Local.dDate.Set(V.Screen.SS_Form1!dtp_Date.Value)
+
+F.Intrinsic.String.Build("Select Rec_ID,RTRIM(Employee) as Employee, Name, UCASE(Work_Center) AS Work_Center, Shift, Sched_Date, Crew_Leader  From GCG_4259_Crew_Sched Where Work_Center  = '{0}' and Sched_Date = '{1}' and Shift = '{2}'",V.Local.sWC.Trim,V.Local.dDate.PervasiveDate,V.Screen.SS_Form1!ddl_Shift.Text,V.Local.sSql)
+
+F.Intrinsic.Control.If(V.DataTable.Crew.Exists,=,True)
+	F.Data.DataTable.Close("Crew")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.CreateFromSQL("Crew","con",V.Local.sSql,True)
+
+F.Intrinsic.String.Build("Select Rec_ID,RTRIM(Employee) as Employee, Name, UCASE(Work_Center) AS Work_Center, Shift, Sched_Date, Crew_Leader From GCG_4259_Crew_Sched Where Sched_Date = '{0}' ",V.Local.dDate.PervasiveDate,V.Local.sSql)
+
+F.Intrinsic.Control.If(V.DataTable.SaveCrew.Exists,=,True)
+	F.Data.DataTable.Close("SaveCrew")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.CreateFromSQL("SaveCrew","con",V.Local.sSql,True)
+
+Gui.SS_Form1.GsGridControl1.AddGridviewFromDatatable("Crew","Crew")
+
+Gui.SS_Form1.GsGridControl1.SetColumnProperty("Crew","Rec_ID","Visible",False)
+Gui.SS_Form1.GsGridControl1.SetColumnProperty("Crew","Shift","Visible",False)
+Gui.SS_Form1.GsGridControl1.SetColumnProperty("Crew","Employee","Caption","Employee No.")
+Gui.SS_Form1.GsGridControl1.SetColumnProperty("Crew","Name","Caption","Employee Name")
+Gui.SS_Form1.GsGridControl1.SetColumnProperty("Crew","Work_Center","Caption","Work Center")
+Gui.SS_Form1.GsGridControl1.SetColumnProperty("Crew","Sched_Date","Caption","Schedule Date")
+Gui.SS_Form1.GsGridControl1.SetColumnProperty("Crew","Crew_Leader","Caption","Crew Leader")
+Gui.SS_Form1.GsGridControl1.SetColumnProperty("Crew","Sched_Date","DisplayCustomDatetime","d")
+Gui.SS_Form1.GsGridControl1.SetColumnProperty("Crew","Name","Width","150")
+'Making the grid clickable
+Gui.SS_Form1.GsGridControl1.SetGridviewProperty("Crew","Editable",False)
+Gui.SS_Form1.GsGridControl1.SetGridviewProperty("Crew","ReadOnly",True)
+
+Gui.SS_Form1.GsGridControl1.MainView("Crew")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Create_Datatable_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Create_Datatable.End
+
+Program.Sub.dtp_Date_Change.Start
+F.Intrinsic.Control.SetErrorHandler("dtp_Date_Change_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+'calling create datable sub since the date has been changed.
+'F.Intrinsic.Control.CallSub(create_datatable)
+f.Intrinsic.Control.CallSub(txt_wc_lostfocus)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("dtp_Date_Change_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.dtp_Date_Change.End
+
+Program.Sub.cmd_AddUpdate_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_AddUpdate_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sFilter.Declare(String)
+V.Local.sEmp.Declare(String)
+V.Local.sWC.Declare(String)
+V.Local.dDate.Declare(String)
+V.Local.i.Declare(Long)
+V.Local.sSql.Declare(String)
+V.Local.sName.Declare(String)
+V.Local.sMsg.Declare(String)
+
+
+V.Local.sEmp.Set(V.Screen.SS_Form1!txt_Emp.Text)
+V.Local.sWC.Set(V.Screen.SS_Form1!txt_WC.Text.UCase)
+V.Local.dDate.Set(V.Screen.SS_Form1!dtp_Date.Value)
+V.Local.sName.Set(V.Screen.SS_Form1!txt_EmpName.Text)
+
+F.Intrinsic.String.Build("Select Rec_ID,RTRIM(Employee) as Employee, Name, UCASE(Work_Center) AS Work_Center, Shift, Sched_Date, Crew_Leader From GCG_4259_Crew_Sched Where Sched_Date = '{0}' ",V.Local.dDate.PervasiveDate,V.Local.sSql)
+
+F.Intrinsic.Control.If(V.DataTable.SaveCrew.Exists,=,True)
+	F.Data.DataTable.Close("SaveCrew")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.CreateFromSQL("SaveCrew","con",V.Local.sSql,True)
+
+'checking if records exists
+F.Intrinsic.String.Build("Employee = '{0}' and Sched_Date = '{1}'",V.Local.sEmp,V.Local.dDate,V.Local.sFilter)
+
+F.Data.DataView.Create("SaveCrew","Temp",22,V.Local.sFilter,"Employee")
+
+'creating dateview for wc and date
+F.Intrinsic.String.Build("Work_Center = '{0}' and Sched_Date = '{1}' and Shift = '{2}'",V.Local.sWC.Trim,V.Local.dDate,V.Screen.SS_Form1!ddl_Shift.Text,V.Local.sFilter)
+
+F.Data.DataView.Create("SaveCrew","SaveTemp",22,V.Local.sFilter,"Employee")
+
+'if the employee is scheduled for the selected days date
+F.Intrinsic.Control.If(V.DataView.SaveCrew!Temp.RowCount--,>=,0)
+	'if the employee is selected for the date and they are crew leader tell them they can't add them.
+	F.Intrinsic.Control.If(V.DataView.SaveCrew!Temp(0).Crew_Leader!FieldVal,=,True)
+		F.Intrinsic.String.Build("Employee {0} is a Crew Leader for Work Center {1}, assign a new Crew Leader for Work Center {1} before assigning this Employee to a new Work Center",V.Local.sEmp,V.DataView.SaveCrew!Temp(0).Work_Center!FieldVal,V.Local.sMsg)
+		F.Intrinsic.UI.Msgbox(V.Local.sMsg)
+		Gui.SS_Form1.chk_CrewLead.Value(0)
+		F.Data.DataView.Close("SaveCrew","SaveTemp")
+		F.Data.DataView.Close("SaveCrew","Temp")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.Endif
+	
+	'if we are trying to add them as crew leader
+	F.Intrinsic.Control.If(V.Screen.SS_Form1!chk_CrewLead.Value,=,1)
+		'loop through the crew for the wc and date	
+		F.Intrinsic.Control.For(V.Local.i,0,V.DataView.SaveCrew!SaveTemp.Rowcount--,1)
+			'if emp for the selected date exists then make them crew leader
+			F.Intrinsic.Control.If(V.DataView.SaveCrew!SaveTemp(V.Local.i).Employee!FieldValTrim,=,V.Local.sEmp,"AND",V.DataView.SaveCrew!SaveTemp(V.Local.i).Sched_Date!FieldValTrim,=,V.Local.dDate.DateComp)
+				F.Data.DataView.SetValue("SaveCrew","SaveTemp",V.Local.i,"Employee",V.Local.sEmp.Trim,"NAME",V.Local.sName.Trim,"Work_Center",V.Local.sWC.Trim,"Shift",V.Screen.SS_Form1!ddl_Shift.Text,"Sched_Date",V.Local.dDate,"Crew_Leader",True)
+			'not the emp for the WC and date so set eveyone else false for crew leader
+			F.Intrinsic.Control.Else
+				F.Data.DataView.SetValue("SaveCrew","SaveTemp",V.Local.i,"Crew_Leader",False)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Next(V.Local.i)
+		
+	'They are not adding a Crew leader
+	F.Intrinsic.Control.Else
+		'if we have anyone for the WC Date
+		F.Intrinsic.Control.If(V.DataView.SaveCrew!SaveTemp.RowCount--,>=,0)
+			'If the first person is not crew leader than we loop through everyone
+			F.Intrinsic.Control.If(V.DataView.SaveCrew!Temp(0).Crew_Leader!FieldVal,=,False)
+				F.Data.DataView.SetValue("SaveCrew","Temp",V.Local.i,"Employee",V.Local.sEmp,"NAME",V.Local.sName,"Work_Center",V.Local.sWC,"Shift",V.Screen.SS_Form1!ddl_Shift.Text,"Sched_Date",V.Local.dDate,"Crew_Leader",False)
+			'the first person is crew leader tell them and exit
+			F.Intrinsic.Control.Else
+				F.Intrinsic.String.Build("Employee {0} is a Crew Leader for Work Center {1}, assign a new Crew Leader for Work Center {1} before assigning this Employee to a new Work Center",V.Local.sEmp,V.Local.sWC,V.Local.sMsg)
+				F.Intrinsic.UI.Msgbox(V.Local.sMsg)
+				Gui.SS_Form1.chk_CrewLead.Value(0)
+				F.Data.DataView.Close("SaveCrew","SaveTemp")
+				F.Data.DataView.Close("SaveCrew","Temp")
+				F.Intrinsic.Control.ExitSub
+			F.Intrinsic.Control.Endif
+		F.Intrinsic.Control.Else
+			F.Data.DataView.SetValue("SaveCrew","Temp",V.Local.i,"Employee",V.Local.sEmp.Trim,"NAME",V.Local.sName.Trim,"Work_Center",V.Local.sWC.Trim,"Shift",V.Screen.SS_Form1!ddl_Shift.Text,"Sched_Date",V.Local.dDate,"Crew_Leader",True)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	
+'The employee and date do not exist so we can add a new record
+F.Intrinsic.Control.Else
+	'adding one to the global rec ID variable
+'	F.Intrinsic.Math.Add(V.Global.iRec_ID,1,V.Global.iRec_ID)
+	'get Rec_ID for adding new records
+	F.ODBC.Connection!con.GetID("GCG_4259_Crew_Sched","Rec_ID",True,V.Global.iRec_ID)
+	'adding the person as crew leader
+	F.Intrinsic.Control.If(V.Screen.SS_Form1!chk_CrewLead.Value,=,1)
+		'loop through and make everyone else crew member
+		F.Intrinsic.Control.For(V.Local.i,0,V.DataView.SaveCrew!SaveTemp.Rowcount--,1)
+			F.Data.DataView.SetValue("SaveCrew","SaveTemp",V.Local.i,"Crew_Leader",False)		
+		F.Intrinsic.Control.Next(V.Local.i)
+		
+		F.Data.DataTable.AddRow("SaveCrew","Rec_ID",V.Global.iRec_ID,"Employee",V.Local.sEmp.Trim,"NAME",V.Local.sName.Trim,"Work_Center",V.Local.sWC.Trim,"Shift",V.Screen.SS_Form1!ddl_Shift.Text,"Sched_Date",V.Local.dDate,"Crew_Leader",True)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Control.If(V.DataView.SaveCrew!SaveTemp.Rowcount--,<,0)
+			F.Data.DataTable.AddRow("SaveCrew","Rec_ID",V.Global.iRec_ID,"Employee",V.Local.sEmp.Trim,"NAME",V.Local.sName.Trim,"Work_Center",V.Local.sWC.Trim,"Shift",V.Screen.SS_Form1!ddl_Shift.Text,"Sched_Date",V.Local.dDate,"Crew_Leader",True)
+		F.Intrinsic.Control.Else
+			F.Data.DataTable.AddRow("SaveCrew","Rec_ID",V.Global.iRec_ID,"Employee",V.Local.sEmp.Trim,"NAME",V.Local.sName.Trim,"Work_Center",V.Local.sWC.Trim,"Shift",V.Screen.SS_Form1!ddl_Shift.Text,"Sched_Date",V.Local.dDate,"Crew_Leader",False)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Data.DataView.Close("SaveCrew","SaveTemp")
+F.Data.DataView.Close("SaveCrew","Temp")
+
+F.Intrinsic.Control.CallSub(savetodb)
+
+F.Intrinsic.Control.CallSub(create_datatable)
+
+Gui.SS_Form1.chk_CrewLead.Value(0)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmd_AddUpdate_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmd_AddUpdate_Click.End
+
+Program.Sub.cmd_Delete_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_Delete_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.i.Declare(Long)
+V.Local.sEmp.Declare(String)
+V.Local.sWC.Declare(String)
+V.Local.sMsg.Declare(String)
+v.Local.sFilter.Declare(string)
+v.Local.sSQL.Declare(String)
+v.Local.dDate.Declare(Date)
+
+v.Local.dDate.Set(v.Screen.SS_Form1!dtp_Date.Value)
+V.Local.sEmp.Set(V.Screen.SS_Form1!txt_Emp.Text)
+V.Local.sWC.Set(V.Screen.SS_Form1!txt_WC.Text.UCase)
+
+F.Intrinsic.String.Build("Select Rec_ID,RTRIM(Employee) as Employee, Name, UCASE(Work_Center) AS Work_Center, Shift, Sched_Date, Crew_Leader From GCG_4259_Crew_Sched Where Sched_Date = '{0}' ",V.Local.dDate.PervasiveDate,V.Local.sSql)
+
+F.Intrinsic.Control.If(V.DataTable.SaveCrew.Exists,=,True)
+	F.Data.DataTable.Close("SaveCrew")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.CreateFromSQL("SaveCrew","con",V.Local.sSql,True)
+
+'Create filter for datatable
+f.Intrinsic.String.Build("Work_Center = '{0}' and Sched_Date = '{1}' and Shift = '{2}'",v.Local.sWC.Trim,v.Screen.SS_Form1!dtp_Date.Value,v.Screen.SS_Form1!ddl_Shift.Text,v.Local.sFilter)
+f.Data.DataView.Create("SaveCrew","DeleteCrew",22,v.Local.sFilter,"")
+
+F.Intrinsic.Control.If(V.DataView.SaveCrew!DeleteCrew.RowCount--,>=,0)
+	F.Intrinsic.Control.For(V.Local.i,0,V.DataView.SaveCrew!DeleteCrew.Rowcount--,1)
+		F.Intrinsic.Control.If(V.DataView.SaveCrew!DeleteCrew(V.Local.i).Employee!FieldValTrim,=,V.Local.sEmp.Trim,"AND",V.DataView.SaveCrew!DeleteCrew(V.Local.i).Work_Center!FieldValTrim,=,V.Local.sWC.Trim,V.DataView.SaveCrew!DeleteCrew(V.Local.i).Sched_Date!FieldValTrim,=,V.Screen.SS_Form1!dtp_Date.Value)
+			F.Intrinsic.Control.If(V.DataView.SaveCrew!DeleteCrew(V.Local.i).Crew_Leader!FieldVal,=,True)
+					F.Intrinsic.Control.If(V.DataView.SaveCrew!DeleteCrew.RowCount--,>,0)
+						F.Intrinsic.String.Build("Employee {0} is a Crew Leader for Work Center {1}, assign a new Crew Leader for Work Center {1} before deleting this Employee",V.Local.sEmp,V.Local.sWC,V.Local.sMsg)
+						F.Intrinsic.UI.Msgbox(V.Local.sMsg)
+						f.Data.DataView.Close("SaveCrew","DeleteCrew")
+						F.Intrinsic.Control.ExitSub
+'					F.Intrinsic.Control.Else
+'						F.Data.DataTable.DeleteRow("SaveCrew",v.DataView.SaveCrew!DeleteCrew(V.Local.i).DataTableIndex)
+'						f.Intrinsic.Control.ExitSub
+					f.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+			F.Data.DataTable.DeleteRow("SaveCrew",v.DataView.SaveCrew!DeleteCrew(V.Local.i).DataTableIndex)
+			F.Intrinsic.Control.ExitFor(V.Local.i)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i)
+F.Intrinsic.Control.EndIf
+
+f.Data.DataView.Close("SaveCrew","DeleteCrew")
+
+F.Intrinsic.Control.CallSub(savetodb)
+f.Intrinsic.Control.CallSub(create_datatable)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmd_Delete_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmd_Delete_Click.End
+
+Program.Sub.cmd_DelWCSch_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_DelWCSch_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.i.Declare(Long)
+v.Local.sFilter.Declare(string)
+v.Local.sSQL.Declare(String)
+v.Local.dDate.Declare(Date)
+
+v.Local.dDate.Set(v.Screen.SS_Form1!dtp_Date.Value)
+
+F.Intrinsic.String.Build("Select Rec_ID,RTRIM(Employee) as Employee, Name, UCASE(Work_Center) AS Work_Center, Shift, Sched_Date, Crew_Leader From GCG_4259_Crew_Sched Where Sched_Date = '{0}' ",V.Local.dDate.PervasiveDate,V.Local.sSql)
+
+F.Intrinsic.Control.If(V.DataTable.SaveCrew.Exists,=,True)
+	F.Data.DataTable.Close("SaveCrew")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.CreateFromSQL("SaveCrew","con",V.Local.sSql,True)
+
+f.Intrinsic.String.Build("Work_Center = '{0}' and Sched_Date = '{1}' and Shift = '{2}' ",v.Screen.SS_Form1!txt_WC.Text.UCase,v.Screen.SS_Form1!dtp_Date.Value,v.Screen.SS_Form1!ddl_Shift.Text,v.Local.sFilter)
+f.Data.DataView.Create("SaveCrew","DeleteCrew",22,v.Local.sFilter,"")
+
+F.Intrinsic.Control.If(V.DataView.SaveCrew!DeleteCrew.RowCount--,>=,0)
+	F.Intrinsic.Control.For(V.Local.i,V.DataView.SaveCrew!DeleteCrew.RowCount--,0,-1)
+		F.Data.DataTable.DeleteRow("SaveCrew",v.DataView.SaveCrew!DeleteCrew(V.Local.i).DataTableIndex)
+	F.Intrinsic.Control.Next(V.Local.i)
+F.Intrinsic.Control.EndIf
+
+f.Data.DataView.Close("SaveCrew","DeleteCrew")
+
+F.Intrinsic.Control.CallSub(savetodb)
+
+F.Intrinsic.Control.CallSub(txt_wc_lostfocus)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmd_DelWCSch_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmd_DelWCSch_Click.End
+
+Program.Sub.cmd_CopyWCSch2_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_CopyWCSch2_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+f.Intrinsic.Control.BlockEvents
+Gui.SS_Form2.txt_CopyWC.Text(V.Screen.SS_Form1!txt_WC.Text)
+Gui.SS_Form2.cmd_txt_CopyWC.SetFocus
+f.Intrinsic.Control.UnBlockEvents
+'f.Intrinsic.Control.CallSub(txt_copywc_lostfocus)
+
+Gui.SS_Form2..Show
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmd_CopyWCSch2_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmd_CopyWCSch2_Click.End
+
+Program.Sub.SS_Form2_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("SS_Form2_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+Gui.SS_Form2..Visible(False)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("SS_Form2_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.SS_Form2_UnLoad.End
+
+Program.Sub.txt_CopyWC_LostFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txt_CopyWC_LostFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sSql.Declare(String)
+V.Local.sFilter.Declare(String)
+V.Local.i.Declare(Long)
+v.Local.bExist.Declare(Boolean)
+v.Local.sFile.Declare(string)
+v.Local.sLines.Declare(string)
+v.Local.sExample.Declare(string)
+v.Local.dDate.Declare(Date)
+
+
+v.Local.dDate.Set(v.Screen.SS_Form1!dtp_Date.Value)
+
+f.Intrinsic.Control.If(v.DataTable.SaveCrew.Exists,=,False)
+	f.Intrinsic.Control.ExitSub
+f.Intrinsic.Control.EndIf
+F.Intrinsic.Control.If(V.DataTable.Copy.Exists,=,True)
+	F.Data.DataTable.Close("Copy")
+F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.If(V.DataView.SaveCrew!Copy.Exists,=,True)
+	F.Data.DataView.Close("SaveCrew","Copy")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("Select Rec_ID,RTRIM(Employee) as Employee, Name, UCASE(Work_Center) AS Work_Center, Shift, Sched_Date, Crew_Leader From GCG_4259_Crew_Sched Where Sched_Date = '{0}' ",V.Local.dDate.PervasiveDate,V.Local.sSql)
+
+F.Intrinsic.Control.If(V.DataTable.SaveCrew.Exists,=,True)
+	F.Data.DataTable.Close("SaveCrew")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.CreateFromSQL("SaveCrew","con",V.Local.sSql,True)
+
+
+F.Intrinsic.Control.If(V.Screen.SS_Form1!dtp_Date.Value,<>,V.Screen.SS_Form2!dtp_CopyDate.Value)
+	Gui.SS_Form2.cmd_Copy.Enabled(True)
+	'We need to check and see if we have a lock file for this shift, day, and WC.
+	f.Intrinsic.String.Build("{0}\CrewLock.txt",v.Caller.FilesDir,v.Local.sFile)
+	f.Intrinsic.File.Exists(v.Local.sFile,v.Local.bExist)
+	f.Intrinsic.Control.If(v.Local.bExist,=,True)
+		f.Intrinsic.File.File2String(v.Local.sFile,v.Local.sLines)
+		f.Intrinsic.String.Build("{0}*!*{1}*!*{2}*!*",v.Screen.SS_Form2!dtp_CopyDate.Value,v.Screen.SS_Form1!ddl_Shift.Text,v.Screen.SS_Form2!txt_CopyWC.Text,v.Local.sExample)
+		f.Intrinsic.String.IsInString(v.Local.sLines,v.Local.sExample,True,v.Local.bExist)
+		f.Intrinsic.Control.If(v.Local.bExist,=,True)
+			'Some one is in it.
+			Gui.SS_Form2.cmd_Copy.Enabled(False)
+			f.Intrinsic.UI.Msgbox("Date, Shift, and WC are already in use.","Warning")
+			f.Intrinsic.Control.ExitSub
+		f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.EndIf
+			
+	F.Intrinsic.String.Build("Work_Center = '{0}' and Sched_Date = '{1}' and Shift = '{2}'",V.Screen.SS_Form1!txt_WC.Text.UCase,V.Screen.SS_Form1!dtp_Date.Value,V.Screen.SS_Form1!ddl_Shift.Text,V.Local.sFilter)
+	F.Data.DataView.Create("SaveCrew","Copy",22,V.Local.sFilter,"Employee")
+	
+	F.Data.DataView.ToDataTable("SaveCrew","Copy","Copy",True)
+	F.Data.DataView.Close("SaveCrew","Copy")
+F.Intrinsic.Control.Else
+	Gui.SS_Form2.cmd_Copy.Enabled(False)
+F.Intrinsic.Control.EndIf
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txt_CopyWC_LostFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.txt_CopyWC_LostFocus.End
+
+Program.Sub.cmd_txt_CopyWC_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_txt_CopyWC_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sRet.Declare(String)
+
+'browser list is parsed for the type-ahead substring as it is being typed
+F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+
+F.Intrinsic.UI.Browser(400,"",V.Local.sRet)
+
+F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+	Gui.SS_Form2.txt_CopyWC.Text(v.Local.sRet.Trim)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.CallSub(txt_copywc_lostfocus)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmd_txt_CopyWC_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmd_txt_CopyWC_Click.End
+
+Program.Sub.cmd_Copy_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_Copy_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.i.Declare(Long)
+v.Local.sSQL.Declare(string)
+
+'get Rec_ID for adding new records
+F.ODBC.Connection!con.GetID("GCG_4259_Crew_Sched","Rec_ID",False,V.Global.iRec_ID)
+			
+F.Intrinsic.Control.For(V.Local.i,0,V.DataTable.Copy.RowCount--,1)
+	F.Intrinsic.Math.Add(V.Global.iRec_ID,1,V.Global.iRec_ID)
+	F.Data.DataTable.SetValue("Copy",V.Local.i,"Rec_ID",V.Global.iRec_ID,"Sched_Date",V.Screen.SS_Form2!dtp_CopyDate.Value,"Work_Center",v.Screen.SS_Form2!txt_CopyWC.Text.UCase,"Shift",v.Screen.SS_Form1!ddl_Shift.Text)
+	f.Intrinsic.String.Build("DELETE FROM GCG_4259_CREW_SCHED WHERE EMPLOYEE = '{0}' AND SCHED_DATE = '{1}' ",v.DataTable.Copy(v.Local.i).Employee!FieldVal,V.Screen.SS_Form2!dtp_CopyDate.Value.PervasiveDate,v.Local.sSQL)
+	f.ODBC.Connection!con.Execute(v.Local.sSQL)
+F.Intrinsic.Control.Next(V.Local.i)
+	
+f.Intrinsic.String.Build("DELETE FROM GCG_4259_CREW_SCHED WHERE WORK_CENTER = '{0}' AND SCHED_DATE = '{1}' AND SHIFT = '{2}'",V.Screen.SS_Form2!txt_CopyWC.Text.UCase,V.Screen.SS_Form2!dtp_CopyDate.Value.PervasiveDate,V.Screen.SS_Form1!ddl_Shift.Text,v.Local.sSQL)
+f.ODBC.Connection!con.Execute(v.Local.sSQL)
+
+F.Data.DataTable.SaveToDB("Copy","con","GCG_4259_Crew_Sched","Rec_ID",7)
+
+F.Data.DataTable.Close("Copy")
+
+F.Intrinsic.Control.CallSub(ss_form2_unload)
+
+Gui.SS_Form2.dtp_CopyDate.Value(v.Ambient.Date)
+Gui.SS_Form2.cmd_Copy.Enabled(False)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmd_Copy_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmd_Copy_Click.End
+
+Program.Sub.dtp_CopyDate_Change.Start
+F.Intrinsic.Control.SetErrorHandler("dtp_CopyDate_Change_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+F.Intrinsic.Control.CallSub(txt_copywc_lostfocus)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("dtp_CopyDate_Change_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.dtp_CopyDate_Change.End
+
+Program.Sub.cmd_PW_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_PW_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sSql.Declare(String)
+V.Local.sRet.Declare(String)
+
+V.Local.sSql.Set("Select Override_PW From GCG_4259_Override_PW")
+
+F.Data.DataTable.CreateFromSQL("PW","con",V.Local.sSql,True)
+
+F.Intrinsic.Control.If(V.DataTable.PW.RowCount--,>=,0)
+	F.Intrinsic.UI.Inputbox("Change/Create the Override Password.","Override Password",V.DataTable.PW(0).Override_PW!FieldValTrim,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Build("Delete From GCG_4259_Override_PW Where Override_PW = '{0}'",V.DataTable.PW(0).Override_PW!FieldValTrim,V.Local.sSql)
+		F.ODBC.Connection!con.Execute(V.Local.sSql)
+		F.Data.DataTable.SetValue("PW",0,"Override_PW",V.Local.sRet.Trim)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.Inputbox("Change/Create the Override Password.","Override Password","",V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Data.DataTable.AddRow("PW","Override_PW",V.Local.sRet.Trim)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.SaveToDB("PW","con","GCG_4259_Override_PW","Override_PW")
+
+F.Data.DataTable.Close("PW")
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmd_PW_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmd_PW_Click.End
+
+Program.Sub.GsGridControl1_RowCellClick.Start
+F.Intrinsic.Control.SetErrorHandler("GsGridControl1_RowCellClick_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+'We are going to add the selected employee to the text boxes.
+Gui.SS_Form1.txt_Emp.Text(v.DataTable.Crew(v.Args.RowIndex).Employee!FieldValTrim)
+Gui.SS_Form1.txt_EmpName.Text(v.DataTable.Crew(v.Args.RowIndex).Name!FieldValTrim)
+Gui.SS_Form1.chk_CrewLead.Value(v.DataTable.Crew(v.Args.RowIndex).Crew_Leader!FieldVal)
+f.Intrinsic.Control.CallSub(txt_emp_lostfocus)
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("GsGridControl1_RowCellClick_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.GsGridControl1_RowCellClick.End
+
+Program.Sub.ddl_Shift_Click.Start
+F.Intrinsic.Control.SetErrorHandler("ddl_Shift_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+F.Intrinsic.Control.If(V.Screen.SS_Form1!ddl_Shift.ListIndex,=,0)
+	Gui.SS_Form1.txt_WC.Enabled(False)
+	Gui.SS_Form1.cmd_txt_WC.Enabled(False)
+	Gui.SS_Form1.txt_WC.Text("")
+	F.Intrinsic.Control.CallSub(txt_wc_lostfocus)
+F.Intrinsic.Control.Else
+	Gui.SS_Form1.txt_WC.Enabled(True)
+	Gui.SS_Form1.cmd_txt_WC.Enabled(True)
+	F.Intrinsic.Control.CallSub(txt_wc_lostfocus)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("ddl_Shift_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.ddl_Shift_Click.End
+
+Program.Sub.txt_WC_GotFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txt_WC_LostFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+v.Global.sPrevWC.Set(v.Screen.SS_Form1!txt_WC.Text)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txt_WC_LostFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.txt_WC_GotFocus.End
+
+Program.Sub.cmd_UploadWCSch_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_UploadWCSch_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sDir.Declare(String)
+V.Local.sErrorDir.Declare(String)
+V.Local.sFileName.Declare(String)
+V.Local.bRet.Declare(Boolean)
+V.Local.sRet.Declare(String)
+V.Local.sRec_ID.Declare(String)
+V.Local.sRow.Declare(String)
+V.Local.sCol.Declare(String)
+V.Local.iRow.Declare(Long)
+V.Local.iCol.Declare(Long)
+V.Local.sShift.Declare(String)
+V.Local.sChargeDate.Declare(String)
+V.Local.sWC.Declare(String)
+V.Local.sSql.Declare(String)
+V.Local.i.Declare(Long)
+V.Local.sErrorFile.Declare(String)
+V.Local.sTemp.Declare(String)
+V.Local.sTemp2.Declare(String)
+
+F.Intrinsic.String.Build("{0}\Crew",V.Caller.GlobalDir,V.Local.sDir)
+F.Intrinsic.String.Build("{0}\Errors",V.Local.sDir,V.Local.sErrorDir)
+
+F.Intrinsic.File.DirExists(V.Local.sDir,V.Local.bRet)
+F.Intrinsic.Control.If(V.Local.bRet,=,False)
+	F.Intrinsic.File.CreateDir(V.Local.sDir)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.File.DirExists(V.Local.sErrorDir,V.Local.bRet)
+F.Intrinsic.Control.If(V.Local.bRet,=,False)
+	F.Intrinsic.File.CreateDir(V.Local.sErrorDir)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("{0}\",V.Local.sDir,V.Local.sDir)
+F.Intrinsic.String.Build("{0}\",V.Local.sErrorDir,V.Local.sErrorDir)
+
+'creating datatable to save crew sched.
+V.Local.sSql.Set("Select Rec_Id, Employee, Name, Work_Center, Sched_Date, Crew_Leader, Shift From GCG_4259_Crew_Sched Where Rec_ID = -1")
+F.Data.DataTable.CreateFromSQL("CrewSched","con",V.Local.sSql,True)
+F.Data.DataTable.DeleteRow("CrewSched")
+F.Data.DataTable.AcceptChanges("CrewSched")
+F.Intrinsic.UI.ShowOpenFileDialog(V.Local.sDir,"","",v.Local.sFileName)
+
+f.Intrinsic.Control.If(v.Local.sFileName,<>,"***CANCEL***")
+	F.Intrinsic.UI.InvokeWaitDialog("Reading Excel SpreedSheet........","Uploading Schedule")
+	F.Automation.MSExcel.CreateAppObject("MSExcel")
+	F.Automation.MSExcel.OpenWorkBook("MSExcel","GuideTree",V.Local.sFileName)
+	F.Automation.MSExcel.OpenWorkSheet("GuideTree","GuideSheet","1")
+	F.Automation.MSExcel.ReadRow("GuideSheet", 2, 1, 2, V.Local.sRow)
+	F.Intrinsic.String.Split(V.Local.sRow,"*!*",V.Local.sCol)
+	V.Local.sShift.Set(V.Local.sCol(0))
+	V.Local.sChargeDate.Set(V.Local.sCol(1))
+	
+	F.Intrinsic.Control.If(V.Local.sShift.Length,>,0)
+		F.Intrinsic.Control.If(V.Local.sShift.Length,>,1)
+			F.Intrinsic.String.Build("{0}Shift greater than 1 char{1}",V.Local.sErrorFile,V.Ambient.NewLine,V.Local.sErrorFile)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("{0}Shift was left blank{1}",V.Local.sErrorFile,V.Ambient.NewLine,V.Local.sErrorFile)
+	F.Intrinsic.Control.EndIf
+	
+	F.Automation.MSExcel.DestroyAllObjects("MSExcel","GuideTree","GuideSheet")
+	
+	F.ODBC.Connection!con.GetID("GCG_4259_Crew_Sched","Rec_ID",False,V.Global.iRec_ID)
+	'opening ecel file and parsing through to upload data
+	F.Automation.MSExcel.CreateAppObject("MSExcel")
+	F.Automation.MSExcel.OpenWorkBook("MSExcel","GuideTree",V.Local.sFileName)
+	F.Automation.MSExcel.OpenWorksheet("GuideTree","GuideSheet2","2")
+	F.Automation.MSExcel.RowCount("GuideSheet2",V.Local.iRow)
+	F.Intrinsic.Control.For(V.Local.i,1,V.Local.iRow,1)
+		F.Intrinsic.UI.ChangeWaitStatus("Processing Excel SpreedSheet........",V.Local.i,0,V.Local.iRow)
+		F.Automation.MSExcel.ReadRow("GuideSheet2",V.Local.i,1,20,V.Local.sRow)
+		F.Intrinsic.String.Split(V.Local.sRow,"*!*",V.Local.sCol)
+		V.Local.sWC.Set(V.Local.sCol(0).Trim)
+		'checking to see if any records exists in ther pervasive table for the Date, wc, shift
+		'saving those Rec_Id's to be deleted later if the excel file has not errors.
+		
+		F.Intrinsic.String.Build("Select Rec_ID From GCG_4259_Crew_Sched Where Sched_Date = '{0}' and Work_Center = '{1}' and Shift = '{2}'",V.Local.sChargeDate.PervasiveDate,V.Local.sWC.Trim,V.Local.sShift.Trim,V.Local.sSql)
+		F.ODBC.Connection!con.ExecuteAndReturn(V.Local.sSql,V.Local.sSql)
+		F.Intrinsic.Control.If(V.Local.sSql.Length,>,0)
+			F.Intrinsic.Control.If(V.Local.sRec_ID.Length,>,0)
+				F.Intrinsic.String.Build("{0}#$#{1}",V.Local.sRec_ID,V.Local.sSql,V.Local.sRec_ID)
+			F.Intrinsic.Control.Else
+				V.Local.sRec_ID.Set(V.Local.sSql)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.If(V.Local.sWC.Length,>,4)
+			F.Intrinsic.String.Build("{0}Work Center greater than 4 chars{1}",V.Local.sErrorFile,V.Ambient.NewLine,V.Local.sErrorFile)
+		F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.For(V.Local.iCol,1,V.Local.sCol.UBound,1)
+			F.Intrinsic.Control.If(V.Local.sCol(V.Local.iCol).Length,=,0)
+				F.Intrinsic.Control.ExitFor(V.Local.iCol)
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.If(V.Local.iCol,=,1)
+				F.Intrinsic.Control.If(V.Local.sCol(V.Local.iCol).Length,<=,5)
+					F.Intrinsic.Math.Add(V.Global.iRec_ID,1,V.Global.iRec_ID)
+					F.Data.DataTable.AddRow("CrewSched","Rec_ID",V.Global.iRec_ID,"Employee",V.Local.sCol(V.Local.iCol).Trim,"Name","","Work_Center",V.Local.sWC.Trim,"Sched_Date",V.Local.sChargeDate.PervasiveDate,"Crew_Leader",True,"Shift",V.Local.sShift.Trim)
+				F.Intrinsic.Control.Else
+					F.Intrinsic.Control.If(V.Local.sCol(V.Local.iCol).Left1,=,"-")
+						F.Intrinsic.String.Build("{0}An employee that has been let go is in the a schedule for a WorkCenter{1}",V.Local.sErrorFile,V.Ambient.NewLine,V.Local.sErrorFile)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.Build("{0}Employee {1} greater than 5 char{2}",V.Local.sErrorFile,V.Local.sCol(V.Local.iCol).Trim,V.Ambient.NewLine,V.Local.sErrorFile)
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.If(V.Local.sCol(V.Local.iCol).Length,<=,5)
+					F.Intrinsic.Math.Add(V.Global.iRec_ID,1,V.Global.iRec_ID)
+					F.Data.DataTable.AddRow("CrewSched","Rec_ID",V.Global.iRec_ID,"Employee",V.Local.sCol(V.Local.iCol).Trim,"Name","","Work_Center",V.Local.sWC.Trim,"Sched_Date",V.Local.sChargeDate.PervasiveDate,"Crew_Leader",False,"Shift",V.Local.sShift.Trim)
+				F.Intrinsic.Control.Else
+					F.Intrinsic.Control.If(V.Local.sCol(V.Local.iCol).Left1,=,"-")
+						F.Intrinsic.String.Build("{0}An employee that has been let go, is in a schedule for WorkCenter: {1}{2}",V.Local.sErrorFile,V.Local.sWC,V.Ambient.NewLine,V.Local.sErrorFile)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.Build("{0}Employee {1} greater than 5 char{2}",V.Local.sErrorFile,V.Local.sCol(V.Local.iCol).Trim,V.Ambient.NewLine,V.Local.sErrorFile)
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Next(V.Local.iCol)
+	F.Intrinsic.Control.Next(V.Local.i)
+	
+	F.Automation.MSExcel.DestroyAllObjects("MSExcel","GuideTree","GuideSheet2")
+	
+	F.Intrinsic.Control.If(V.Local.sErrorFile.Length,=,0)
+		'saving if any information was added to the datatable
+		F.Intrinsic.Control.If(V.DataTable.CrewSched.RowCount--,<>,-1)
+			F.Intrinsic.UI.ChangeWaitStatus("Saving WorkCenter(s) Schedule........")
+			F.Intrinsic.Control.If(V.Local.sRec_ID.Length,>,0)
+				F.Intrinsic.String.Split(V.Local.sRec_ID,"#$#",V.Local.sRec_ID)
+				F.Intrinsic.Control.For(V.Local.i,0,V.Local.sRec_ID.UBound,1)
+					F.Intrinsic.Control.If(V.Local.i,=,0)
+						F.Intrinsic.String.Build("('{0}'",V.Local.sRec_ID(V.Local.i),V.Local.sRec_ID(0))
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.Build("{0},'{1}'",V.Local.sRec_ID(0),V.Local.sRec_ID(V.Local.i),V.Local.sRec_ID(0))
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.Next(V.Local.i)
+				F.Intrinsic.String.Build("{0})",V.Local.sRec_ID(0),V.Local.sRec_ID)
+				F.Intrinsic.String.Build("Delete From GCG_4259_Crew_Sched Where Rec_ID IN {0}",V.Local.sRec_ID,V.Local.sSql)
+				F.ODBC.Connection!con.Execute(V.Local.sSql)
+			F.Intrinsic.Control.EndIf
+			
+			F.Data.Dictionary.SetDefaultReturn("EmpName","")
+			F.Data.DataTable.FillFromDictionary("CrewSched","EmpName","Employee","Name")
+			F.Data.DataTable.SaveToDB("CrewSched","con","GCG_4259_Crew_Sched","Rec_ID",256,"Rec_ID@!@Rec_ID*!*Employee@!@Employee*!*Name@!@Name*!*Work_Center@!@Work_Center*!*Shift@!@Shift*!*Sched_Date@!@Sched_Date*!*Crew_Leader@!@Crew_Leader")
+		F.Intrinsic.Control.EndIf
+
+		F.Intrinsic.UI.CloseWaitDialog
+	F.Intrinsic.Control.Else
+		F.Intrinsic.UI.ChangeWaitStatus("Creating Error File........")
+		F.Intrinsic.String.Build("{0}FileErrors.txt",V.Local.sErrorDir,V.Local.sTemp2)
+		F.Intrinsic.File.String2File(V.Local.sTemp2,V.Local.sErrorFile)
+		f.Intrinsic.String.Build("Excel Spreadsheet as errors that need to be addressed.  Check Error File: {0}",V.Local.sTemp2,V.Local.sTemp2)
+		F.Intrinsic.UI.Msgbox(V.Local.sTemp2,"Warning")
+		F.Intrinsic.UI.CloseWaitDialog
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.CrewSched.Exists,=,True)
+	F.Data.DataTable.Close("CrewSched")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmd_UploadWCSch_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4259_Crew_Management.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmd_UploadWCSch_Click.End
+
+Program.Sub.Comments.Start
+${$0$}$$}$RLK$}$12/6/2016 10:57:49 AM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$This will be a custom project that at time of shipment will, based on the Serial Numbers being shipped, retrieve the document control pdf.  Once the pdf are retrieved each file will be split into individual pages, the page size changed to legal, and a watermark added to the bottom right of the page that includes the Customer PO, Serial Number of Finished Goods, Sales Order Number, and Batch ID.  After the Split files are generated for all the document control PDF the user can then select either print, email, or save the collection to the shipment, and any combination can be selected.
+
+Program.Sub.Comments.End
+
+Program.Sub.ScreenSS.Start
+SS_Form1{{CAPTION::Crew Management For SFDC/GUI
+SS_Form1.CTRL{{NAME::txt_WC\\TYPE::2\\CAPTION::Work Center\\TABSTOP::1\\GROUP::1\\BROWSER::1\\SIZE::1
+SS_Form1.CTRL{{NAME::dtp_Date\\TYPE::6\\CAPTION::Date\\TABSTOP::2\\GROUP::1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::txt_Emp\\TYPE::2\\CAPTION::Employee\\TABSTOP::3\\GROUP::2\\BROWSER::1\\SIZE::1
+SS_Form1.CTRL{{NAME::txt_EmpName\\TYPE::2\\CAPTION::Name\\TABSTOP::4\\GROUP::2\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::chk_CrewLead\\TYPE::9\\CAPTION::Crew Leader\\TABSTOP::5\\GROUP::-1\\SUBGROUP::1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::txt_ScanBadge\\TYPE::2\\CAPTION::Scan Badge\\TABSTOP::6\\GROUP::-1\\BROWSER::0\\SIZE::1
+
+SS_Form2{{CAPTION::Copy Work Center
+SS_Form2.CTRL{{NAME::txt_CopyWC\\TYPE::2\\CAPTION::Work Center\\TABSTOP::1\\GROUP::1\\BROWSER::1\\SIZE::1
+SS_Form2.CTRL{{NAME::dtp_CopyDate\\TYPE::6\\CAPTION::Copy to Date\\TABSTOP::2\\GROUP::1\\BROWSER::0\\SIZE::1
+SS_Form2.CTRL{{NAME::cmd_Copy\\TYPE::5\\CAPTION::Copy\\TABSTOP::3\\GROUP::-1\\BROWSER::0\\SIZE::1
+
+Program.Sub.ScreenSS.End
